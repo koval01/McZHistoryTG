@@ -1,5 +1,5 @@
 $(document).ready(function() {
-  function get_channel_html_data(bef_ = null, callback) {
+  function get_channel_html_data(callback, bef_ = null) {
     $.ajax({
         url: `https://t.me/s/zalupa_history?before=${bef_}`,
         type: "POST",
