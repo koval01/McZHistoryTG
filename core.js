@@ -3,6 +3,7 @@ $(document).ready(function() {
     $.ajax({
         url: `https://t.me/s/zalupa_history?before=${bef_}`,
         type: "POST",
+        dataType: 'jsonp',
         headers: {
           "Origin": "https://t.me",
           "Referer": "https://t.me/s/zalupa_history",
@@ -12,7 +13,7 @@ $(document).ready(function() {
             if (o.length != 0) {
                 callback(o)
             } else {
-                console.log("Len check error!")
+                console.log("Len check error! (get_channel_html_data)")
             }
         },
         error: function() {
