@@ -1,19 +1,13 @@
 $(document).ready(function() {
   function get_channel_html_data(callback, bef_ = null) {
     $.ajax({
-        url: `https://t.me/s/zalupa_history?before=${bef_}`,
-        type: "POST",
-        crossDomain: true,
-        headers: {
-          "Origin": "https://t.me",
-          "Referer": "https://t.me/s/zalupa_history",
-          "Host": "t.me",
-        },
+        url: `https://zlpnews.herokuapp.com/?before=${bef_}`,
+        type: "GET",
         success: function(o) {
-            if (o.length != 0) {
-                callback(o)
+            if (o["success"]) {
+                callback(o["body"])
             } else {
-                console.log("Len check error! (get_channel_html_data)")
+                console.log("Check error! (get_channel_html_data)")
             }
         },
         error: function() {
