@@ -12,11 +12,11 @@ $(document).ready(function() {
             if (o.length != 0) {
                 callback(o)
             } else {
-                console.log("Error get channel data!")
+                console.log("Len check error!")
             }
         },
         error: function() {
-            console.log("Error! Failed to query Telegram API and get channel information.")
+            console.log("Error get channel data!")
         }
     })
   }
