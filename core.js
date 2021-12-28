@@ -20,4 +20,7 @@ $(document).ready(function() {
         }
     })
   }
+  
+  // test
+  get_channel_html_data(function(data) {console.log(data)})
 })
