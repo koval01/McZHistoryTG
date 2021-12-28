@@ -3,6 +3,7 @@ $(document).ready(function() {
     $.ajax({
         url: `https://t.me/s/zalupa_history?before=${bef_}`,
         type: "POST",
+        crossDomain: true,
         dataType: 'jsonp',
         headers: {
           "Origin": "https://t.me",
