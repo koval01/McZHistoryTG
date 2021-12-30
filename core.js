@@ -34,7 +34,7 @@ $(document).ready(function () {
         let m_type = "", media = ""
 
         try {
-            const img_obj = $(".tgme_widget_message_photo_wrap", el)
+            const img_obj = $(".tgme_widget_message_photo_wrap", jq_object)
             console.log(img_obj.css("background-image"))
         } catch (e) {
             console.log(`Media processor catch: ${e}`)
