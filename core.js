@@ -101,7 +101,7 @@ $(document).ready(function () {
         if (!post_text) {post_text = ""}
 
         const pattern = `
-            <div class="col">
+            <div class="col" style="margin-bottom:0.7em">
                 <div class="card shadow-sm">
                     ${media_pattern}
                     <div class="card-body">
