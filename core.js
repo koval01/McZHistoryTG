@@ -131,7 +131,8 @@ $(document).ready(function () {
                             <small class="text-muted">
                                 <span class="post_views">${views}</span> | 
                                 ${time_} | 
-                                <a href="https://t.me/${data_post}" target="_blank">В TG</a>
+                                <a href="https://t.me/${data_post}" target="_blank">В TG</a> | 
+                                by Elon Tusk
                             </small>
                         </div>
                     </div>
