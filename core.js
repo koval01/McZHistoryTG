@@ -42,7 +42,7 @@ $(document).ready(function () {
         try {
             const media_obj = $(".tgme_widget_message_photo_wrap", jq_object)
                 .css("background-image")
-                .match(/^url\(\"(.*)\"\)$/g)
+                .match(/^url\(\"(.*)\"\)$/g)[0]
             media_struct(media_obj, "image")
         } catch (e) {
             console.log(`Images extract catch: ${e}`)
