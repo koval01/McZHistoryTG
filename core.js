@@ -31,16 +31,29 @@ $(document).ready(function () {
     }
 
     function get_media(jq_object) {
-        let m_type = "", media = ""
+        var array_ = []
 
-        try {
-            const img_obj = $(".tgme_widget_message_photo_wrap", jq_object)
-            console.log(img_obj.css("background-image"))
-        } catch (e) {
-            console.log(`Media processor catch: ${e}`)
+        function media_struct(url, type_) {
+            array_.push({
+                "m_type": type_, "m_url": url
+            })
         }
 
-        return {"m_type": m_type, "media": media}
+        try {
+            const media_obj = $(".tgme_widget_message_photo_wrap", jq_object).css("background-image")
+            media_struct(media_obj, "image")
+        } catch (e) {
+            console.log(`Images extract catch: ${e}`)
+        }
+
+        try {
+            const media_obj = $(".tgme_widget_message_video", jq_object).attr("src")
+            media_struct(media_obj, "video")
+        } catch (e) {
+            console.log(`Videos extract catch: ${e}`)
+        }
+
+        return array_
     }
 
     function struct_els(els) {
@@ -58,15 +71,13 @@ $(document).ready(function () {
             const time_ = time_processing($(".time", el).attr("datetime"))
 
             const media_ = get_media(el)
-            const media = media_.media
-            const m_type = media_.m_type
 
             array_.push({
-                "post_text": text_post, "m_type": m_type, 
+                "post_text": text_post,
                 "meta": {
                     "views": views, "time": time_
                 }, "media": {
-                    "data": media
+                    "data": media_
                 }, "data_post": data_post
             })
         }
@@ -74,30 +85,39 @@ $(document).ready(function () {
         return array_.reverse()
     }
 
+    function format_media(media) {
+        let media_pattern = ""
+
+        for (let i = 0; i < media.length; i++) {
+            if (media[i].m_type == "image") {
+                const image_pattern = `
+                <img src="${media[i].m_url}" class="bd-placeholder-img card-img-top" 
+                    width="100%" height="225" role="img" title="Фото" aria-label="Фото">`
+
+                media_pattern = `${media_pattern}\n${image_pattern}`
+
+            } else if (media[i].m_type == "video") {
+                const video_pattern = `
+                <video src="${media[i].m_url}" class="bd-placeholder-img card-img-top" 
+                    width="100%" height="225" role="img" title="Видео" aria-label="Видео"></video>`
+
+                media_pattern = `${media_pattern}\n${video_pattern}`
+
+            }
+        }
+
+        return media_pattern
+    }
+
     function add_post(post_data) {
-        const m_type = post_data.m_type
+        const media = post_data.media.data
         const views = post_data.meta.views
         const time_ = post_data.meta.time
         const data_post = post_data.data_post
 
         let post_text = post_data.post_text
-        let media_pattern = ""
-
-        if (m_type == "image") {
-            const image_pattern = `
-            <img src="${m_url}" class="bd-placeholder-img card-img-top" 
-                width="100%" height="225" role="img" title="Фото" aria-label="Фото">`
-
-            media_pattern = image_pattern
-
-        } else if (m_type == "video") {
-            const video_pattern = `
-            <video src="${m_url}" class="bd-placeholder-img card-img-top" 
-                width="100%" height="225" role="img" title="Видео" aria-label="Видео"></video>`
-
-            media_pattern = video_pattern
-
-        }
+        let media_pattern = format_media(media)
+        
         if (!post_text) {post_text = ""}
 
         const pattern = `
