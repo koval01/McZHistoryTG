@@ -122,6 +122,7 @@ $(document).ready(function () {
 
         let post_text = post_data.post_text
         // let media_pattern = format_media(media)
+        console.log(format_media(media))
         let media_pattern = ""
 
         if (!post_text) {post_text = ""}
