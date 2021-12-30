@@ -40,7 +40,9 @@ $(document).ready(function () {
         }
 
         try {
-            const media_obj = $(".tgme_widget_message_photo_wrap", jq_object).css("background-image")
+            const media_obj = $(".tgme_widget_message_photo_wrap", jq_object)
+                .css("background-image")
+                .match(/^url\(\"(.*)\"\)$/g)
             media_struct(media_obj, "image")
         } catch (e) {
             console.log(`Images extract catch: ${e}`)
@@ -117,7 +119,7 @@ $(document).ready(function () {
 
         let post_text = post_data.post_text
         let media_pattern = format_media(media)
-        
+
         if (!post_text) {post_text = ""}
 
         const pattern = `
