@@ -1,10 +1,10 @@
+function mediaError(e) {
+    return e.onerror = "", e.src = "", !0
+}
+
 $(document).ready(function () {
     function clear_str_(string_) {
         return string_.toString().replace(/\\n/g, '').replace(/\\"/g, '"').replace(/\\/g, '')
-    }
-
-    function mediaError(e) {
-        return e.onerror = "", e.src = "", !0
     }
 
     function get_channel_html_data(callback, bef_ = null) {
