@@ -55,6 +55,7 @@ $(document).ready(function () {
             console.log(`Videos extract catch: ${e}`)
         }
 
+        console.log(array_)
         return array_
     }
 
