@@ -3,6 +3,10 @@ $(document).ready(function () {
         return string_.toString().replace(/\\n/g, '').replace(/\\"/g, '"').replace(/\\/g, '')
     }
 
+    function mediaError(e) {
+        return e.onerror = "", e.src = "", !0
+    }
+
     function get_channel_html_data(callback, bef_ = null) {
         $.ajax({
             url: `https://zlpnews.herokuapp.com/?before=${bef_}`,
@@ -92,14 +96,14 @@ $(document).ready(function () {
         for (let i = 0; i < media.length; i++) {
             if (media[i].m_type == "image") {
                 const image_pattern = `
-                <img src="${media[i].m_url}" class="bd-placeholder-img card-img-top" 
+                <img src="${media[i].m_url}" onerror="mediaError(this);" class="bd-placeholder-img card-img-top" 
                     width="100%" height="225" role="img" title="Фото" aria-label="Фото">`
 
                 media_pattern = `${media_pattern}\n${image_pattern}`
 
             } else if (media[i].m_type == "video") {
                 const video_pattern = `
-                <video src="${media[i].m_url}" class="bd-placeholder-img card-img-top" 
+                <video src="${media[i].m_url}" onerror="mediaError(this);" class="bd-placeholder-img card-img-top" 
                     width="100%" height="225" role="img" title="Видео" aria-label="Видео"></video>`
 
                 media_pattern = `${media_pattern}\n${video_pattern}`
