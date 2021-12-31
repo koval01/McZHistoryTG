@@ -207,6 +207,17 @@ $(document).ready(function () {
         return media_pattern
     }
 
+    function check_sys_msg(text) {
+        const frgs = [" pinned «", "Channel photo updated"]
+
+        for (let i = 0; i < frgs.length; i++) {
+            if (text.includes(frgs[i])) {
+                return false
+            }
+        }
+        return true
+    }
+
     function add_post(post_data) {
         const media = post_data.media.data
         const views = post_data.meta.views
@@ -242,6 +253,13 @@ $(document).ready(function () {
         last_post = post_id
 
         console.log(`Result pattern: ${pattern}`)
+
+        if (!post_text.length && !media_pattern.length) { 
+            return 
+        } else if (!check_sys_msg(post_text)) { 
+            return 
+        }
+
         $(".row-global-block").append(pattern)
     }
 
