@@ -29,6 +29,14 @@ $(document).ready(function () {
         return string_.toString().replace(/\\n/g, '').replace(/\\"/g, '"').replace(/\\/g, '')
     }
 
+    $("a.scroll-to").on("click", function(e) {
+        e.preventDefault()
+        var anchor = $(this).attr('href')
+        $('html, body').stop().animate({
+            scrollTop: $(anchor).offset().top - 60
+        }, 800)
+    })
+
     function get_channel_html_data(callback, bef_ = null) {
         $.ajax({
             url: `https://api.zalupa.world/channel?before=${bef_}&choice=0`,
@@ -210,8 +218,10 @@ $(document).ready(function () {
 
         if (!post_text) {post_text = ""}
 
+        const post_id = parseInt(data_post.match(/\/\d+/g)[0].slice(1))
+
         const pattern = `
-            <div class="col" style="margin-bottom:0.7em;padding-right:8px!important;padding-left:8px!important">
+            <div class="col" id="post_${post_id}" style="margin-bottom:0.7em;padding-right:8px!important;padding-left:8px!important">
                 <div class="card shadow-sm">
                     ${media_pattern}
                     <div class="card-body">
@@ -228,7 +238,8 @@ $(document).ready(function () {
                 </div>
             </div>
         `
-        last_post = parseInt(data_post.match(/\/\d+/g)[0].slice(1))
+
+        last_post = post_id
 
         console.log(`Result pattern: ${pattern}`)
         $(".row-global-block").append(pattern)
