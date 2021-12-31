@@ -11,15 +11,28 @@ $(document).ready(function () {
         $.ajax({
             url: `https://api.zalupa.world/channel?before=${bef_}&choice=0`,
             type: "GET",
-            success: function (o) {
-                if (o["success"]) {
-                    callback(clear_str_(o["body"]))
-                } else {
-                    console.log("Check error! (get_channel_html_data)")
-                }
+            success: function (r) {
+                if (r.success && r.body.length > 128) {
+                    callback(clear_str_(r.body))
+                } else { console.log("Check error! (get_channel_html_data)") }
             },
             error: function () {
                 console.log("Error get channel data!")
+            }
+        })
+    }
+
+    function get_game_server_data(callback) {
+        $.ajax({
+            url: `https://api.zalupa.world/server`,
+            type: "GET",
+            success: function (r) {
+                if (r.success && r.body.online && r.body.status == "success") {
+                    callback(r.body)
+                } else { console.log("Check error! (get_game_server_data)") }
+            },
+            error: function () {
+                console.log("Error get server data!")
             }
         })
     }
@@ -187,4 +200,7 @@ $(document).ready(function () {
 
     // init
     loads_posts()
+
+    // experemental data
+    get_game_server_data(function(data) {console.log(data)})
 })
