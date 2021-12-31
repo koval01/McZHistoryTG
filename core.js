@@ -1,5 +1,8 @@
 var notify_hidden = true
 var server_update_active = true
+var first_load = false
+var load_freeze = false
+var last_post = null
 
 function mediaError(e) {
     return e.onerror = "", e.src = "", !0
@@ -140,24 +143,29 @@ $(document).ready(function () {
 
         for (let i = 0; i < els.length; i++) {
             console.log(els[i])
-            const el = $('<div></div>')
-            el.html(els[i])
-  
-            const text_post = $(".tgme_widget_message_text", el).html()
-            const views = $(".tgme_widget_message_views", el).html()
-            const data_post = $(".tgme_widget_message", el).attr("data-post")
-            const time_ = time_processing($(".time", el).attr("datetime"))
 
-            const media_ = get_media(el)
+            try {
+                const el = $('<div></div>')
+                el.html(els[i])
+    
+                const text_post = $(".tgme_widget_message_text", el).html()
+                const views = $(".tgme_widget_message_views", el).html()
+                const data_post = $(".tgme_widget_message", el).attr("data-post")
+                const time_ = time_processing($(".time", el).attr("datetime"))
 
-            array_.push({
-                "post_text": text_post,
-                "meta": {
-                    "views": views, "time": time_
-                }, "media": {
-                    "data": media_
-                }, "data_post": data_post
-            })
+                const media_ = get_media(el)
+
+                array_.push({
+                    "post_text": text_post,
+                    "meta": {
+                        "views": views, "time": time_
+                    }, "media": {
+                        "data": media_
+                    }, "data_post": data_post
+                })
+            } catch (e) {
+                console.log(e)
+            }
         }
 
         return array_.reverse()
@@ -220,6 +228,7 @@ $(document).ready(function () {
                 </div>
             </div>
         `
+        last_post = parseInt(data_post.match(/\/\d+/g)[0].slice(1)) - 1
 
         console.log(`Result pattern: ${pattern}`)
         $(".row-global-block").append(pattern)
@@ -238,8 +247,21 @@ $(document).ready(function () {
                 add_post(struct[i])
             }
 
+            load_freeze = false
+            first_load = true
+
         }, bef_ = before)
     }
+
+    $(window).scroll(function () {
+        const scrollPosition = window.pageYOffset
+        const windowSize = window.innerHeight
+        const bodyHeight = document.documentElement.scrollHeight
+        const trigger = Math.max(bodyHeight - (scrollPosition + windowSize), 0)
+
+        if (trigger < 450 && first_load && !load_freeze) {
+            load_freeze = true, loads_posts(last_post) }
+    })
 
     // init
     loads_posts()
