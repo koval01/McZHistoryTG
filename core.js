@@ -260,7 +260,10 @@ $(document).ready(function () {
         const trigger = Math.max(bodyHeight - (scrollPosition + windowSize), 0)
 
         if (trigger < 450 && first_load && !load_freeze) {
-            load_freeze = true, loads_posts(last_post) }
+            load_freeze = true
+            notify("Подгружаем посты...")
+            loads_posts(last_post)
+        }
     })
 
     // init
