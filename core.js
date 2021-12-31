@@ -50,7 +50,7 @@ $(document).ready(function () {
             url: `https://api.zalupa.world/server`,
             type: "GET",
             success: function (r) {
-                if (r.success && r.body.online && !r.body.error && r.body.status == "success") {
+                if (r.success && r.data.toString().length > 0) {
                     callback(r.body)
                 } else { 
                     console.log("Check error! (get_game_server_data)")
@@ -69,8 +69,8 @@ $(document).ready(function () {
         try {
             if (server_update_active) {
                 get_game_server_data(function(data) {
-                    $("#server_motd").text(data.motd)
-                    $("#server_players").text(`${data.players.now}/${data.players.max}`)
+                    $("#server_motd").text(data.motd.html)
+                    $("#server_players").text(`${data.players.online}/${data.players.max}`)
                     // $("#server_version").text(data.server.protocol)
                 })
             }
