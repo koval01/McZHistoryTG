@@ -33,7 +33,7 @@
   color: #fff;
   margin-top: 0.5em;
   margin-left: 5px;
-  font-size: calc(12px + (18 - 14) * ( (100vw - 480px) / ( 1024 - 480) ));
+  font-size: calc(12px + (18 - 14) * ((100vw - 480px) / (1024 - 480)));
 }
 .error_box {
   bottom: 0;
