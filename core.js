@@ -228,7 +228,7 @@ $(document).ready(function () {
                 </div>
             </div>
         `
-        last_post = parseInt(data_post.match(/\/\d+/g)[0].slice(1)) - 1
+        last_post = parseInt(data_post.match(/\/\d+/g)[0].slice(1))
 
         console.log(`Result pattern: ${pattern}`)
         $(".row-global-block").append(pattern)
