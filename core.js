@@ -27,13 +27,21 @@ $(document).ready(function () {
             url: `https://api.zalupa.world/server`,
             type: "GET",
             success: function (r) {
-                if (r.success && r.body.online && r.body.status == "success") {
+                if (r.success && r.body.online && !r.body.error && r.body.status == "success") {
                     callback(r.body)
                 } else { console.log("Check error! (get_game_server_data)") }
             },
             error: function () {
                 console.log("Error get server data!")
             }
+        })
+    }
+
+    function monitoring_game_server_update() {
+        get_game_server_data(function(data) {
+            $("#server_motd").text(data.motd)
+            $("#server_players").text(`${data.players.now}/${data.players.max}`)
+            // $("#server_version").text(data.server.protocol)
         })
     }
 
@@ -201,6 +209,6 @@ $(document).ready(function () {
     // init
     loads_posts()
 
-    // experemental data
-    get_game_server_data(function(data) {console.log(data)})
+    monitoring_game_server_update()
+    setInterval(monitoring_game_server_update, 3000)
 })
