@@ -1,4 +1,5 @@
 var notify_hidden = true
+var server_update_active = true
 
 function mediaError(e) {
     return e.onerror = "", e.src = "", !0
@@ -65,11 +66,18 @@ $(document).ready(function () {
 
     function monitoring_game_server_update() {
         console.log("Update server data")
-        get_game_server_data(function(data) {
-            $("#server_motd").text(data.motd)
-            $("#server_players").text(`${data.players.now}/${data.players.max}`)
-            // $("#server_version").text(data.server.protocol)
-        })
+        try {
+            if (server_update_active) {
+                get_game_server_data(function(data) {
+                    $("#server_motd").text(data.motd)
+                    $("#server_players").text(`${data.players.now}/${data.players.max}`)
+                    // $("#server_version").text(data.server.protocol)
+                })
+            }
+        } catch (e) {
+            console.log(e)
+            server_update_active = false
+        }
     }
 
     function time_processing(time) {
