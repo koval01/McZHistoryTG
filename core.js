@@ -1,5 +1,23 @@
+var notify_hidden = true
+
 function mediaError(e) {
     return e.onerror = "", e.src = "", !0
+}
+
+function notify(text) {
+    const error_box = $(".error_box")
+    const error_text = $(".error_text")
+    
+    let ready = false
+    
+    if (notify_hidden) { ready = true } 
+    else { error_box.css("margin-bottom", "-50px"), ready = true }
+    
+    if (ready) {
+        error_text.text(text)
+        error_box.css("margin-bottom", "0")
+        setTimeout(function() { error_box.css("margin-bottom", "-50px") }, 2500)
+    }
 }
 
 $(document).ready(function () {
@@ -38,6 +56,7 @@ $(document).ready(function () {
     }
 
     function monitoring_game_server_update() {
+        console.log("Update server data")
         get_game_server_data(function(data) {
             $("#server_motd").text(data.motd)
             $("#server_players").text(`${data.players.now}/${data.players.max}`)
