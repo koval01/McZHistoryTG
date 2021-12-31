@@ -4,6 +4,20 @@ var first_load = false
 var load_freeze = false
 var last_post = null
 
+const reply_post_link_icon = `
+    <svg xmlns="http://www.w3.org/2000/svg" version="1.0" width="512.000000pt" height="512.000000pt" 
+        viewBox="0 0 512.000000 512.000000" preserveAspectRatio="xMidYMid meet" class="reply_post_link">
+        <g transform="translate(0.000000,512.000000) scale(0.100000,-0.100000)" fill="#000000" stroke="none">
+            <path d="M1895 4672 c-16 -11 -443 -421 -949 -912 -601 -584 -923 -904 -932 -926 -20 -48 -17 -93 9 -136 12 -21 
+                437 -440 945 -933 1001 -970 953 -929 1041 -905 21 5 50 19 65 31 57 45 56 37 56 555 l0 477 283 -6 c217 -4 
+                314 -10 421 -26 803 -124 1502 -586 1916 -1267 36 -58 76 -119 89 -135 68 -85 187 -78 255 14 66 89 0 643 -120 
+                1012 -336 1030 -1186 1806 -2234 2038 -141 32 -296 55 -415 62 -49 3 -114 8 -142 11 l-53 5 0 471 c0 519 0 515 
+                -63 560 -43 31 -132 36 -172 10z">
+            </path>
+        </g>
+    </svg>
+`
+
 function mediaError(e) {
     return e.onerror = "", e.src = "", !0
 }
@@ -169,7 +183,8 @@ $(document).ready(function () {
                         "views": views, "time": time_
                     }, "media": {
                         "data": media_
-                    }, "data_post": data_post
+                    }, "data_post": data_post,
+                    "reply_post_id": null
                 })
             } catch (e) {
                 console.log(e)
@@ -223,11 +238,14 @@ $(document).ready(function () {
         const views = post_data.meta.views
         const time_ = post_data.meta.time
         const data_post = post_data.data_post
+        const reply_post_id = post_data.reply_post_id
 
         let post_text = post_data.post_text
         let media_pattern = format_media(media)
+        let reply_ = "block"
 
         if (!post_text) {post_text = ""}
+        if (!reply_post_id) {reply_ = "none"}
 
         const post_id = parseInt(data_post.match(/\/\d+/g)[0].slice(1))
 
@@ -236,6 +254,9 @@ $(document).ready(function () {
                 <div class="card shadow-sm" style="transition:background-color 1s ease">
                     ${media_pattern}
                     <div class="card-body">
+                        <a href="post_${reply_post_id}" class="scroll-to" style="display:${reply_}">
+                            ${reply_post_link_icon}
+                        </a>
                         <p class="card-text" style="margin-top:-0.8em">${post_text}</p>
                         <div class="d-flex justify-content-between align-items-center">
                             <small class="text-muted">
