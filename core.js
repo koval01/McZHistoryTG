@@ -69,7 +69,7 @@ $(document).ready(function () {
         try {
             if (server_update_active) {
                 get_game_server_data(function(data) {
-                    $("#server_motd").text(data.motd.html)
+                    $("#server_motd").html(data.motd.html)
                     $("#server_players").text(`${data.players.online}/${data.players.max}`)
                     // $("#server_version").text(data.server.protocol)
                 })
