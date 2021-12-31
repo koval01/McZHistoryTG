@@ -32,10 +32,14 @@ $(document).ready(function () {
             success: function (r) {
                 if (r.success && r.body.length > 128) {
                     callback(clear_str_(r.body))
-                } else { console.log("Check error! (get_channel_html_data)") }
+                } else { 
+                    console.log("Check error! (get_channel_html_data)")
+                    notify("Ошибка проверки данных (get_channel_html_data)")
+                }
             },
             error: function () {
                 console.log("Error get channel data!")
+                notify("Не удалось загрузить посты")
             }
         })
     }
@@ -47,10 +51,14 @@ $(document).ready(function () {
             success: function (r) {
                 if (r.success && r.body.online && !r.body.error && r.body.status == "success") {
                     callback(r.body)
-                } else { console.log("Check error! (get_game_server_data)") }
+                } else { 
+                    console.log("Check error! (get_game_server_data)")
+                    notify("Ошибка проверки данных (get_game_server_data)")
+                }
             },
             error: function () {
                 console.log("Error get server data!")
+                notify("Не удалось загрузить данные сервера")
             }
         })
     }
