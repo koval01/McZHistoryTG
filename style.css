@@ -31,9 +31,8 @@
 }
 .error_text {
   color: #fff;
-  text-align: right;
-  padding-right: 10px;
   margin-top: 0.5em;
+  margin-left: 5px;
 }
 .error_box {
   bottom: 0;
