@@ -50,7 +50,7 @@ $(document).ready(function () {
             url: `https://api.zalupa.world/server`,
             type: "GET",
             success: function (r) {
-                if (r.success && r.data.toString().length > 0) {
+                if (r.success) {
                     callback(r.body)
                 } else { 
                     console.log("Check error! (get_game_server_data)")
