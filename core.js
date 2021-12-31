@@ -245,5 +245,5 @@ $(document).ready(function () {
     loads_posts()
 
     monitoring_game_server_update()
-    setInterval(monitoring_game_server_update, 3000)
+    setInterval(monitoring_game_server_update, 1500)
 })
