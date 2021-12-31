@@ -31,7 +31,7 @@
 }
 .error_text {
   color: #fff;
-  margin-top: 0.5em;
+  line-height: 32px!important;
   margin-left: 5px;
   font-size: calc(12px + (18 - 14) * ((100vw - 480px) / (1024 - 480)));
 }
