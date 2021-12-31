@@ -148,7 +148,7 @@ $(document).ready(function () {
                 const el = $('<div></div>')
                 el.html(els[i])
     
-                const text_post = $(".tgme_widget_message_text", el).html()
+                const text_post = $(".js-message_text", el).html()
                 const views = $(".tgme_widget_message_views", el).html()
                 const data_post = $(".tgme_widget_message", el).attr("data-post")
                 const time_ = time_processing($(".time", el).attr("datetime"))
@@ -259,7 +259,7 @@ $(document).ready(function () {
         const bodyHeight = document.documentElement.scrollHeight
         const trigger = Math.max(bodyHeight - (scrollPosition + windowSize), 0)
 
-        if (trigger < 450 && first_load && !load_freeze) {
+        if (trigger < 450 && first_load && !load_freeze && last_post > 1) {
             load_freeze = true
             notify("Подгружаем посты...")
             loads_posts(last_post)
