@@ -46,6 +46,9 @@ $(document).ready(function () {
     $("a.scroll-to").on("click", function(e) {
         e.preventDefault()
         var anchor = $(this).attr('href')
+        if (!anchor) {
+            notify("Не удалось найти запись")
+        }
         $('html, body').stop().animate({
             scrollTop: $(anchor).offset().top - 80
         }, 800)
