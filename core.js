@@ -47,7 +47,7 @@ $(document).ready(function () {
         e.preventDefault()
         var anchor = $(this).attr('href')
         $('html, body').stop().animate({
-            scrollTop: $(anchor).offset().top - 60
+            scrollTop: $(anchor).offset().top - 80
         }, 800)
     })
 
