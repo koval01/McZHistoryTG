@@ -31,7 +31,7 @@
 }
 .error_text {
   color: #fff;
-  line-height: 36px!important;
+  line-height: 36px !important;
   margin-left: 5px;
   font-size: calc(12px + (18 - 14) * ((100vw - 680px) / (1024 - 480)));
 }
@@ -44,17 +44,15 @@
   transition: margin-bottom 0.2s;
 }
 .motd_background {
-  background: url("minecraft_dirt_wallpaper_by_thedevartist_d3l1qoj-pre.jpg")!important;
-  border-radius: 8px!important;
+  background: url("minecraft_dirt_wallpaper_by_thedevartist_d3l1qoj-pre.jpg") !important;
+  border-radius: 8px !important;
   height: 100px;
   padding: 0.3em;
 }
 .reply_post_link {
-  width: 24!important;
-  height: 24!important;
-  margin-bottom: 12px;
-  margin-top: -12px;
+  margin-bottom: 12px !important;
+  margin-top: -12px !important;
   background: #c6c6c6;
-  border-radius: 5px;
-  padding: 4px!important;
+  border-radius: 5px !important;
+  padding: 4px !important;
 }
