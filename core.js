@@ -172,11 +172,19 @@ $(document).ready(function () {
     
                 const text_post = $(".js-message_text", el).html()
                 const views = $(".tgme_widget_message_views", el).html()
+
                 const data_post = $(".tgme_widget_message", el).attr("data-post")
+                const post_id = parseInt(data_post.match(/\/\d+/g)[0].slice(1))
+
                 const time_ = time_processing($(".time", el).attr("datetime"))
 
-                const reply_get = $(".tgme_widget_message_reply", el).html()
-                console.log(reply_get)
+                const reply_get = $(".tgme_widget_message_reply", el)
+                var reply_msg_id = null
+                if (reply_get.html()) {
+                    reply_msg_id = reply_get.attr("href")
+                    reply_msg_id = parseInt(reply_msg_id.match(/\/\d+/g)[0].slice(1))
+                    console.log(`Message ${post_id} is reply for message ${reply_msg_id}`)
+                }
 
                 const media_ = get_media(el)
 
@@ -186,8 +194,10 @@ $(document).ready(function () {
                         "views": views, "time": time_
                     }, "media": {
                         "data": media_
-                    }, "data_post": data_post,
-                    "reply_post_id": null
+                    }, 
+                    "data_post": data_post, 
+                    "post_id": post_id,
+                    "reply_post_id": reply_msg_id,
                 })
             } catch (e) {
                 console.log(e)
@@ -242,6 +252,7 @@ $(document).ready(function () {
         const time_ = post_data.meta.time
         const data_post = post_data.data_post
         const reply_post_id = post_data.reply_post_id
+        const post_id = data_post.post_id
 
         let post_text = post_data.post_text
         let media_pattern = format_media(media)
@@ -249,8 +260,6 @@ $(document).ready(function () {
 
         if (!post_text) {post_text = ""}
         if (!reply_post_id) {reply_ = "none"}
-
-        const post_id = parseInt(data_post.match(/\/\d+/g)[0].slice(1))
 
         const pattern = `
             <div class="col" id="post_${post_id}" style="margin-bottom:0.7em;padding-right:8px!important;padding-left:8px!important">
