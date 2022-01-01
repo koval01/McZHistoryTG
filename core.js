@@ -180,6 +180,7 @@ $(document).ready(function () {
 
                 const reply_get = $(".tgme_widget_message_reply", el)
                 var reply_msg_id = null
+
                 if (reply_get.html()) {
                     reply_msg_id = reply_get.attr("href")
                     reply_msg_id = parseInt(reply_msg_id.match(/\/\d+/g)[0].slice(1))
@@ -243,6 +244,7 @@ $(document).ready(function () {
                 return false
             }
         }
+
         return true
     }
 
@@ -252,7 +254,7 @@ $(document).ready(function () {
         const time_ = post_data.meta.time
         const data_post = post_data.data_post
         const reply_post_id = post_data.reply_post_id
-        const post_id = data_post.post_id
+        const post_id = post_data.post_id
 
         let post_text = post_data.post_text
         let media_pattern = format_media(media)
