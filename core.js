@@ -175,6 +175,9 @@ $(document).ready(function () {
                 const data_post = $(".tgme_widget_message", el).attr("data-post")
                 const time_ = time_processing($(".time", el).attr("datetime"))
 
+                const reply_get = $(".tgme_widget_message_reply", el).html()
+                console.log(reply_get)
+
                 const media_ = get_media(el)
 
                 array_.push({
