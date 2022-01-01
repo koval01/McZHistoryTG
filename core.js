@@ -255,7 +255,7 @@ $(document).ready(function () {
                     ${media_pattern}
                     <div class="card-body">
                         <a href="#post_${reply_post_id}" class="scroll-to" style="display:${reply_}">
-                            ${reply_post_link_icon}
+                            <span class="reply_post_link">${reply_post_link_icon}</span>
                         </a>
                         <p class="card-text" style="margin-top:-0.8em">${post_text}</p>
                         <div class="d-flex justify-content-between align-items-center">
