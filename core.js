@@ -274,9 +274,11 @@ $(document).ready(function () {
                 <div class="card shadow-sm" style="transition:background-color 1s ease">
                     ${media_pattern}
                     <div class="card-body">
-                        <a href="#post_${reply_post_id}" class="scroll-to" style="display:${reply_}">
-                            ${reply_post_link_icon}
-                        </a>
+                        <div id="post_reply_button_" style="display:none"> <!-- hidden -->
+                            <a href="#post_${reply_post_id}" class="scroll-to" style="display:${reply_}">
+                                ${reply_post_link_icon}
+                            </a>
+                        </div>
                         <p class="card-text" style="margin-top:-0.8em">${post_text}</p>
                         <div class="d-flex justify-content-between align-items-center">
                             <small class="text-muted">
