@@ -65,7 +65,7 @@ body {
   padding-left:8px !important;
 }
 .neuro_text_block {
-  height: 6em;
+  min-height: 6em;
 }
 
 @media (min-width: 768px) {
