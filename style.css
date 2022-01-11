@@ -64,6 +64,9 @@ body {
   padding-right:8px !important;
   padding-left:8px !important;
 }
+.neuro_text_block {
+  height: 6em;
+}
 
 @media (min-width: 768px) {
   .post_margin_set {
