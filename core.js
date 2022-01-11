@@ -102,6 +102,7 @@ $(document).ready(function () {
             url: `https://api.zalupa.world/neuro`,
             type: "GET",
             success: function (r) {
+                console.log(r)
                 if (r.success) {
                     callback(r.body)
                 } else { 
