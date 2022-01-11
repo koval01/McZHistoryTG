@@ -120,7 +120,7 @@ $(document).ready(function () {
         try {
             get_neuro_continue(function(data) {
                 const random_choice = data[Math.floor(Math.random() * data.length)]
-                $("#neuro_text_continue_").text(random_choice.trim())
+                $("#neuro_text_continue_").text(random_choice.toString().trim())
             })
         } catch (e) {
             console.log(e)
