@@ -270,7 +270,7 @@ $(document).ready(function () {
         if (!reply_post_id) {reply_ = "none"}
 
         const pattern = `
-            <div class="col" id="post_${post_id}" style="margin-bottom:0.7em;padding-right:8px!important;padding-left:8px!important">
+            <div class="col post_style_set" id="post_${post_id}">
                 <div class="card shadow-sm" style="transition:background-color 1s ease">
                     ${media_pattern}
                     <div class="card-body">
