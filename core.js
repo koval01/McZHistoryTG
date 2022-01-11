@@ -145,8 +145,8 @@ $(document).ready(function () {
 
     function time_processing(time) {
         const date_ = Date.parse(time)
-        const date = new Date();
-        const offset = date.getTimezoneOffset();
+        const date = new Date()
+        const offset = date.getTimezoneOffset()
         const timezone_ = Math.abs(offset) * 60 * 1000 + date_
         const date_obj = new Date(timezone_)
 
