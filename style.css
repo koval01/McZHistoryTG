@@ -57,8 +57,10 @@
   padding: 4px !important;
 }
 .post_margin_set {
-  margin-right: 15% !important;
-  margin-left: 15% !important;
+  max-width: 80% !important;
+  justify-content: center !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
 }
 .post_style_set {
     margin-bottom:0.7em;
