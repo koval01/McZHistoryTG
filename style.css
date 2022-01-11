@@ -51,6 +51,7 @@ body {
   border-radius: 8px !important;
   height: 8em;
   padding: 0.8em;
+  font-size: 0.8em !important;
 }
 .reply_post_link {
   margin-bottom: 12px !important;
