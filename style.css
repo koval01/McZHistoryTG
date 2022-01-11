@@ -1,3 +1,6 @@
+body {
+  font-family: 'Comfortaa', cursive !important;
+}
 .emoji {
     width: 1.25em;
     vertical-align: top;
