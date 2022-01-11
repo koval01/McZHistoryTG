@@ -56,14 +56,17 @@
   border-radius: 5px !important;
   padding: 4px !important;
 }
-.post_margin_set {
-  max-width: 80% !important;
-  justify-content: center !important;
-  margin-left: auto !important;
-  margin-right: auto !important;
-}
 .post_style_set {
-    margin-bottom:0.7em;
-    padding-right:8px !important;
-    padding-left:8px !important;
+  margin-bottom:0.7em;
+  padding-right:8px !important;
+  padding-left:8px !important;
+}
+
+@media (min-width: 768px) {
+  .post_margin_set {
+    max-width: 80% !important;
+    justify-content: center !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+  }
 }
