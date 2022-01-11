@@ -324,11 +324,8 @@ $(document).ready(function () {
 
         console.log(`Result pattern: ${pattern}`)
 
-        if (!post_text.length && !media_pattern.length) { 
-            return 
-        } else if (!check_sys_msg(post_text)) { 
-            return 
-        }
+        if (!post_text.length && !media_pattern.length || !check_sys_msg(post_text)) 
+        { return }
 
         $(".row-global-block").append(pattern)
     }
