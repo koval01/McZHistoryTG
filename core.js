@@ -96,6 +96,25 @@ $(document).ready(function () {
             }
         })
     }
+    
+    function get_neuro_continue(callback) {
+        $.ajax({
+            url: `https://api.zalupa.world/neuro`,
+            type: "GET",
+            success: function (r) {
+                if (r.success) {
+                    callback(r.body)
+                } else { 
+                    console.log("Check error! (get_neuro_continue)")
+                    notify("Ошибка! Не удалось получить ответ от нейросети (get_neuro_continue)")
+                }
+            },
+            error: function () {
+                console.log("Error get server data!")
+                notify("Не удалось получить ответ от нейросети")
+            }
+        })
+    }
 
     function monitoring_game_server_update() {
         console.log("Update server data")
