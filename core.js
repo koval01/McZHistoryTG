@@ -4,7 +4,7 @@ var first_load = false
 var load_freeze = false
 var last_post = null
 
-const reply_enabled = false;
+const reply_enabled = false
 
 const reply_post_link_icon = `
     <svg xmlns="http://www.w3.org/2000/svg" version="1.0" width="24.000000pt" height="24.000000pt" 
