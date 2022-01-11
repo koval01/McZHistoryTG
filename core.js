@@ -4,6 +4,8 @@ var first_load = false
 var load_freeze = false
 var last_post = null
 
+const reply_enabled = false;
+
 const reply_post_link_icon = `
     <svg xmlns="http://www.w3.org/2000/svg" version="1.0" width="24.000000pt" height="24.000000pt" 
         viewBox="0 0 512.000000 512.000000" preserveAspectRatio="xMidYMid meet" class="reply_post_link">
@@ -265,16 +267,22 @@ $(document).ready(function () {
         let post_text = post_data.post_text
         let media_pattern = format_media(media)
         let reply_ = "block"
+        let reply_enb = "block"
+        let reply_post = "block"
 
         if (!post_text) {post_text = ""}
         if (!reply_post_id) {reply_ = "none"}
+        if (!reply_enabled) {reply_enb = "none"}
+        if (reply_post_id && !reply_enabled) {reply_post = "none"}
 
         const pattern = `
-            <div class="col post_style_set" id="post_${post_id}">
+            <div class="col post_style_set" id="post_${post_id}" style="display:${reply_post}">
+                <!-- reply_post_id: ${reply_post_id}; reply_enabled: ${reply_enabled} -->
                 <div class="card shadow-sm" style="transition:background-color 1s ease">
                     ${media_pattern}
                     <div class="card-body">
-                        <div id="post_reply_button_" style="display:none"> <!-- hidden -->
+                        <div id="post_reply_button_" style="display:${reply_enb}"> 
+                            <!-- reply_enabled: ${reply_enabled} -->
                             <a href="#post_${reply_post_id}" class="scroll-to" style="display:${reply_}">
                                 ${reply_post_link_icon}
                             </a>
