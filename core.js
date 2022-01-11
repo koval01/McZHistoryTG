@@ -1,202 +1,385 @@
-var notify_hidden = !0,
-    server_update_active = !0,
-    first_load = !1,
-    load_freeze = !1,
-    last_post = null;
-const reply_enabled = !1,
-    reply_post_link_icon =
-        '\n    <svg xmlns="http://www.w3.org/2000/svg" version="1.0" width="24.000000pt" height="24.000000pt" \n        viewBox="0 0 512.000000 512.000000" preserveAspectRatio="xMidYMid meet" class="reply_post_link">\n        <g transform="translate(0.000000,512.000000) scale(0.100000,-0.100000)" fill="#000000" stroke="none">\n            <path d="M1895 4672 c-16 -11 -443 -421 -949 -912 -601 -584 -923 -904 -932 -926 -20 -48 -17 -93 9 -136 12 -21 \n                437 -440 945 -933 1001 -970 953 -929 1041 -905 21 5 50 19 65 31 57 45 56 37 56 555 l0 477 283 -6 c217 -4 \n                314 -10 421 -26 803 -124 1502 -586 1916 -1267 36 -58 76 -119 89 -135 68 -85 187 -78 255 14 66 89 0 643 -120 \n                1012 -336 1030 -1186 1806 -2234 2038 -141 32 -296 55 -415 62 -49 3 -114 8 -142 11 l-53 5 0 471 c0 519 0 515 \n                -63 560 -43 31 -132 36 -172 10z">\n            </path>\n        </g>\n    </svg>\n';
+var notify_hidden = true
+var server_update_active = true
+var first_load = false
+var load_freeze = false
+var last_post = null
+
+const reply_enabled = false
+
+const reply_post_link_icon = `
+    <svg xmlns="http://www.w3.org/2000/svg" version="1.0" width="24.000000pt" height="24.000000pt" 
+        viewBox="0 0 512.000000 512.000000" preserveAspectRatio="xMidYMid meet" class="reply_post_link">
+        <g transform="translate(0.000000,512.000000) scale(0.100000,-0.100000)" fill="#000000" stroke="none">
+            <path d="M1895 4672 c-16 -11 -443 -421 -949 -912 -601 -584 -923 -904 -932 -926 -20 -48 -17 -93 9 -136 12 -21 
+                437 -440 945 -933 1001 -970 953 -929 1041 -905 21 5 50 19 65 31 57 45 56 37 56 555 l0 477 283 -6 c217 -4 
+                314 -10 421 -26 803 -124 1502 -586 1916 -1267 36 -58 76 -119 89 -135 68 -85 187 -78 255 14 66 89 0 643 -120 
+                1012 -336 1030 -1186 1806 -2234 2038 -141 32 -296 55 -415 62 -49 3 -114 8 -142 11 l-53 5 0 471 c0 519 0 515 
+                -63 560 -43 31 -132 36 -172 10z">
+            </path>
+        </g>
+    </svg>
+`
+
 function mediaError(e) {
-    return (e.onerror = ""), (e.src = ""), !0;
+    return e.onerror = "", e.src = "", !0
 }
-function notify(e) {
-    const t = $(".error_box"),
-        o = $(".error_text");
-    let n = !1;
-    notify_hidden ? (n = !0) : (t.css("margin-bottom", "-50px"), (n = !0)),
-        n &&
-            (o.text(e),
-            t.css("margin-bottom", "0"),
-            setTimeout(function () {
-                t.css("margin-bottom", "-50px");
-            }, 2500));
+
+function notify(text) {
+    const error_box = $(".error_box")
+    const error_text = $(".error_text")
+    
+    let ready = false
+    
+    if (notify_hidden) { ready = true } 
+    else { error_box.css("margin-bottom", "-50px"), ready = true }
+    
+    if (ready) {
+        error_text.text(text)
+        error_box.css("margin-bottom", "0")
+        setTimeout(function() { error_box.css("margin-bottom", "-50px") }, 2500)
+    }
 }
+
 $(document).ready(function () {
-    function e() {
+    function clear_str_(string_) {
+        return string_.toString().replace(/\\n/g, '').replace(/\\"/g, '"').replace(/\\/g, '')
+    }
+
+    $("a.scroll-to").on("click", function(e) {
+        e.preventDefault()
+        var anchor = $(this).attr('href')
+
+        // if (!anchor) {
+        //     notify("Не удалось найти запись")
+        // }
+        console.log(anchor)
+
+        $('html, body').stop().animate({
+            scrollTop: $(anchor).offset().top - 80
+        }, 800)
+    })
+
+    function get_channel_html_data(callback, bef_ = null) {
+        $.ajax({
+            url: `https://api.zalupa.world/channel?before=${bef_}&choice=0`,
+            type: "GET",
+            success: function (r) {
+                if (r.success && r.body.length > 128) {
+                    callback(clear_str_(r.body))
+                } else { 
+                    console.log("Check error! (get_channel_html_data)")
+                    notify("Ошибка проверки данных (get_channel_html_data)")
+                }
+            },
+            error: function () {
+                console.log("Error get channel data!")
+                notify("Не удалось загрузить посты")
+            }
+        })
+    }
+
+    function get_game_server_data(callback) {
+        $.ajax({
+            url: `https://api.zalupa.world/server`,
+            type: "GET",
+            success: function (r) {
+                if (r.success) {
+                    callback(r.body)
+                } else { 
+                    console.log("Check error! (get_game_server_data)")
+                    notify("Ошибка проверки данных (get_game_server_data)")
+                }
+            },
+            error: function () {
+                console.log("Error get server data!")
+                notify("Не удалось загрузить данные сервера")
+            }
+        })
+    }
+    
+    function get_neuro_continue(callback) {
+        $.ajax({
+            url: `https://api.zalupa.world/neuro`,
+            type: "GET",
+            success: function (r) {
+                if (r.success) {
+                    callback(r.body)
+                } else { 
+                    console.log("Check error! (get_neuro_continue)")
+                    notify("Ошибка! Не удалось получить ответ от нейросети (get_neuro_continue)")
+                }
+            },
+            error: function () {
+                console.log("Error get server data!")
+                notify("Не удалось получить ответ от нейросети")
+            }
+        })
+    }
+    
+    function neuro_text_update() {
         try {
-            (e = function (e) {
-                $("#neuro_text_continue_").text(e);
-            }),
-                $.ajax({
-                    url: "https://api.zalupa.world/neuro",
-                    type: "GET",
-                    success: function (t) {
-                        t.success ? e(t.body) : (console.log("Check error! (get_neuro_continue)"), notify("Ошибка! Не удалось получить ответ от нейросети (get_neuro_continue)"));
-                    },
-                    error: function () {
-                        console.log("Error get server data!"), notify("Не удалось получить ответ от нейросети");
-                    },
-                });
+            get_neuro_continue(function(data) {
+                $("#neuro_text_continue_").text(data)
+            })
         } catch (e) {
-            console.log(e);
+            console.log(e)
         }
-        var e;
     }
-    function t() {
-        console.log("Update server data");
+
+    function monitoring_game_server_update() {
+        console.log("Update server data")
         try {
-            server_update_active &&
-                ((e = function (e) {
-                    $("#server_motd").html(e.motd.html), $("#server_players").text(`${e.players.online}/${e.players.max}`);
-                }),
-                $.ajax({
-                    url: "https://api.zalupa.world/server",
-                    type: "GET",
-                    success: function (t) {
-                        t.success ? e(t.body) : (console.log("Check error! (get_game_server_data)"), notify("Ошибка проверки данных (get_game_server_data)"));
-                    },
-                    error: function () {
-                        console.log("Error get server data!"), notify("Не удалось загрузить данные сервера");
-                    },
-                }));
+            if (server_update_active) {
+                get_game_server_data(function(data) {
+                    $("#server_motd").html(data.motd.html)
+                    $("#server_players").text(`${data.players.online}/${data.players.max}`)
+                    // $("#server_version").text(data.server.protocol)
+                })
+            }
         } catch (e) {
-            console.log(e), (server_update_active = !1);
+            console.log(e)
+            server_update_active = false
         }
-        var e;
     }
-    function o(e) {
-        const t = Date.parse(e),
-            o = new Date().getTimezoneOffset(),
-            n = 60 * Math.abs(o) * 1e3 + t;
-        return new Date(n).toLocaleString();
+
+    function time_processing(time) {
+        const date_ = Date.parse(time)
+        const date = new Date()
+        const offset = date.getTimezoneOffset()
+        const timezone_ = Math.abs(offset) * 60 * 1000 + date_
+        const date_obj = new Date(timezone_)
+
+        return date_obj.toLocaleString()
     }
-    function n(e) {
-        var t = [];
-        function o(e, o) {
-            t.push({ m_type: o, m_url: e });
+
+    function get_media(jq_object) {
+        var array_ = []
+
+        function media_struct(url, type_) {
+            array_.push({
+                "m_type": type_, "m_url": url
+            })
         }
-        function n(e, t) {
-            for (let n = 0; n < e.length; n++) {
-                let r = null;
-                const s = $("<div></div>");
-                s.html(e[n]),
-                    "image" == t
-                        ? (r = $(".tgme_widget_message_photo_wrap", s)
-                              .css("background-image")
-                              .replace(/url\(\"/g, "")
-                              .replace(/\"\)/g, ""))
-                        : "video" == t && (r = $(".tgme_widget_message_video", s).attr("src")),
-                    o(r, t);
+
+        function extract_media_url(obj, type_) {
+            for (let i = 0; i < obj.length; i++) {
+                let media_obj = null
+
+                const el = $('<div></div>')
+                el.html(obj[i])
+
+                if (type_ == "image") {
+                    media_obj = $(".tgme_widget_message_photo_wrap", el).css("background-image")
+                        .replace(/url\(\"/g, "").replace(/\"\)/g, "")
+                } else if (type_ == "video") {
+                    media_obj = $(".tgme_widget_message_video", el).attr("src")
+                }
+
+                media_struct(media_obj, type_)
             }
         }
-        try {
-            n($(".tgme_widget_message_photo_wrap", e), "image");
-        } catch (e) {
-            console.log(`Images extract catch: ${e}`);
-        }
-        try {
-            n($(".tgme_widget_message_video", e), "video");
-        } catch (e) {
-            console.log(`Videos extract catch: ${e}`);
-        }
-        return console.log(t), t;
-    }
-    function r(e) {
-        const t = e.media.data,
-            o = e.meta.views,
-            n = e.meta.time,
-            r = e.data_post,
-            s = e.reply_post_id,
-            l = e.post_id;
-        let a = e.post_text,
-            i = (function (e) {
-                let t = "";
-                for (let o = 0; o < e.length; o++)
-                    e[o].m_url &&
-                        ("image" == e[o].m_type
-                            ? (t = `${t}\n${`\n                    <img src="${e[o].m_url}" onerror="mediaError(this);" class="bd-placeholder-img card-img-top" \n                        width="100%" height="100%" role="img" title="Фото" aria-label="Фото" \n                        style="margin-bottom:0.4em;border-radius:3px!important">`}`)
-                            : "video" == e[o].m_type &&
-                              (t = `${t}\n${`\n                    <video src="${e[o].m_url}" controls loop onerror="mediaError(this);" class="bd-placeholder-img card-img-top" \n                        width="100%" height="100%" title="Видео" aria-label="Видео" \n                        style="margin-bottom:0.4em;border-radius:3px!important"></video>`}`));
-                return t;
-            })(t),
-            c = "block",
-            d = "block",
-            p = "block";
-        a || (a = ""), s || (c = "none"), reply_enabled || (d = "none"), s && !reply_enabled && (p = "none");
-        const _ = `\n            <div class="col post_style_set" id="post_${l}" style="display:${p}">\n                \x3c!-- reply_post_id: ${s}; reply_enabled: ${reply_enabled} --\x3e\n                <div class="card shadow-sm" style="transition:background-color 1s ease">\n                    ${i}\n                    <div class="card-body">\n                        <div id="post_reply_button_" style="display:${d}"> \n                            \x3c!-- reply_enabled: ${reply_enabled} --\x3e\n                            <a href="#post_${s}" class="scroll-to" style="display:${c}">\n                                ${reply_post_link_icon}\n                            </a>\n                        </div>\n                        <p class="card-text" style="margin-top:-0.8em">${a}</p>\n                        <div class="d-flex justify-content-between align-items-center">\n                            <small class="text-muted">\n                                <span class="post_views">${o}</span> | \n                                ${n} | \n                                <a href="https://t.me/${r}" target="_blank">В TG</a>\n                                <br/>by Elon Tusk\n                            </small>\n                        </div>\n                    </div>\n                </div>\n            </div>\n        `;
-        (last_post = l),
-            console.log(`Result pattern: ${_}`),
-            (a.length || i.length) &&
-                (function (e) {
-                    const t = [" pinned «", "Channel photo updated"];
-                    for (let o = 0; o < t.length; o++) if (e.includes(t[o])) return !1;
-                    return !0;
-                })(a) &&
-                $(".row-global-block").append(_);
-    }
-    function s(e = null) {
-        !(function (e, t = null) {
-            $.ajax({
-                url: `https://api.zalupa.world/channel?before=${t}&choice=0`,
-                type: "GET",
-                success: function (t) {
-                    t.success && t.body.length > 128
-                        ? e(t.body.toString().replace(/\\n/g, "").replace(/\\"/g, '"').replace(/\\/g, ""))
-                        : (console.log("Check error! (get_channel_html_data)"), notify("Ошибка проверки данных (get_channel_html_data)"));
-                },
-                error: function () {
-                    console.log("Error get channel data!"), notify("Не удалось загрузить посты");
-                },
-            });
-        })(function (e) {
-            const t = $("<div></div>");
-            t.html(e);
-            const s = (function (e) {
-                console.log(`Len els: ${e.length}`);
-                let t = [];
-                for (let s = 0; s < e.length; s++) {
-                    console.log(e[s]);
-                    try {
-                        const l = $("<div></div>");
-                        l.html(e[s]);
-                        const a = $(".js-message_text", l).html(),
-                            i = $(".tgme_widget_message_views", l).html(),
-                            c = $(".tgme_widget_message", l).attr("data-post"),
-                            d = parseInt(c.match(/\/\d+/g)[0].slice(1)),
-                            p = o($(".time", l).attr("datetime")),
-                            _ = $(".tgme_widget_message_reply", l);
-                        var r = null;
-                        _.html() && ((r = _.attr("href")), (r = parseInt(r.match(/\/\d+/g)[0].slice(1))), console.log(`Message ${d} is reply for message ${r}`));
-                        const g = n(l);
-                        t.push({ post_text: a, meta: { views: i, time: p }, media: { data: g }, data_post: c, post_id: d, reply_post_id: r });
-                    } catch (e) {
-                        console.log(e);
-                    }
-                }
-                return t.reverse();
-            })($(".tgme_widget_message_wrap", t));
-            for (let e = 0; e < s.length; e++) console.log(s[e]), r(s[e]);
-            (load_freeze = !1), (first_load = !0);
-        }, (bef_ = e));
-    }
-    $("a.scroll-to").on("click", function (e) {
-        e.preventDefault();
-        var t = $(this).attr("href");
-        console.log(t),
-            $("html, body")
-                .stop()
-                .animate({ scrollTop: $(t).offset().top - 80 }, 800);
-    }),
-        $(window).scroll(function () {
-            const e = window.pageYOffset,
-                t = window.innerHeight,
-                o = document.documentElement.scrollHeight;
-            Math.max(o - (e + t), 0) < 450 && first_load && !load_freeze && last_post > 1 && ((load_freeze = !0), notify("Подгружаем посты..."), s(last_post));
-        }),
-        s(),
-        t(),
-        setInterval(t, 1e3),
-        e(),
-        setInterval(e, 1e4);
-});
 
+        try {
+            extract_media_url($(".tgme_widget_message_photo_wrap", jq_object), "image")
+        } catch (e) {
+            console.log(`Images extract catch: ${e}`)
+
+        }
+
+        try {
+            extract_media_url($(".tgme_widget_message_video", jq_object), "video")
+        } catch (e) {
+            console.log(`Videos extract catch: ${e}`)
+        }
+
+        console.log(array_)
+        return array_
+    }
+
+    function struct_els(els) {
+        console.log(`Len els: ${els.length}`)
+        let array_ = []
+
+        for (let i = 0; i < els.length; i++) {
+            console.log(els[i])
+
+            try {
+                const el = $('<div></div>')
+                el.html(els[i])
+    
+                const text_post = $(".js-message_text", el).html()
+                const views = $(".tgme_widget_message_views", el).html()
+
+                const data_post = $(".tgme_widget_message", el).attr("data-post")
+                const post_id = parseInt(data_post.match(/\/\d+/g)[0].slice(1))
+
+                const time_ = time_processing($(".time", el).attr("datetime"))
+
+                const reply_get = $(".tgme_widget_message_reply", el)
+                var reply_msg_id = null
+
+                if (reply_get.html()) {
+                    reply_msg_id = reply_get.attr("href")
+                    reply_msg_id = parseInt(reply_msg_id.match(/\/\d+/g)[0].slice(1))
+                    console.log(`Message ${post_id} is reply for message ${reply_msg_id}`)
+                }
+
+                const media_ = get_media(el)
+
+                array_.push({
+                    "post_text": text_post,
+                    "meta": {
+                        "views": views, "time": time_
+                    }, "media": {
+                        "data": media_
+                    }, 
+                    "data_post": data_post, 
+                    "post_id": post_id,
+                    "reply_post_id": reply_msg_id,
+                })
+            } catch (e) {
+                console.log(e)
+            }
+        }
+
+        return array_.reverse()
+    }
+
+    function format_media(media) {
+        let media_pattern = ""
+
+        for (let i = 0; i < media.length; i++) {
+            if (media[i].m_url) {
+                if (media[i].m_type == "image") {
+                    const image_pattern = `
+                    <img src="${media[i].m_url}" onerror="mediaError(this);" class="bd-placeholder-img card-img-top" 
+                        width="100%" height="100%" role="img" title="Фото" aria-label="Фото" 
+                        style="margin-bottom:0.4em;border-radius:3px!important">`
+
+                    media_pattern = `${media_pattern}\n${image_pattern}`
+
+                } else if (media[i].m_type == "video") {
+                    const video_pattern = `
+                    <video src="${media[i].m_url}" controls loop onerror="mediaError(this);" class="bd-placeholder-img card-img-top" 
+                        width="100%" height="100%" title="Видео" aria-label="Видео" 
+                        style="margin-bottom:0.4em;border-radius:3px!important"></video>`
+
+                    media_pattern = `${media_pattern}\n${video_pattern}`
+
+                }
+            }
+        }
+
+        return media_pattern
+    }
+
+    function check_sys_msg(text) {
+        const frgs = [" pinned «", "Channel photo updated"]
+
+        for (let i = 0; i < frgs.length; i++) {
+            if (text.includes(frgs[i])) {
+                return false
+            }
+        }
+
+        return true
+    }
+
+    function add_post(post_data) {
+        const media = post_data.media.data
+        const views = post_data.meta.views
+        const time_ = post_data.meta.time
+        const data_post = post_data.data_post
+        const reply_post_id = post_data.reply_post_id
+        const post_id = post_data.post_id
+
+        let post_text = post_data.post_text
+        let media_pattern = format_media(media)
+        let reply_ = "block"
+        let reply_enb = "block"
+        let reply_post = "block"
+
+        if (!post_text) {post_text = ""}
+        if (!reply_post_id) {reply_ = "none"}
+        if (!reply_enabled) {reply_enb = "none"}
+        if (reply_post_id && !reply_enabled) {reply_post = "none"}
+
+        const pattern = `
+            <div class="col post_style_set" id="post_${post_id}" style="display:${reply_post}">
+                <!-- reply_post_id: ${reply_post_id}; reply_enabled: ${reply_enabled} -->
+                <div class="card shadow-sm" style="transition:background-color 1s ease">
+                    ${media_pattern}
+                    <div class="card-body">
+                        <div id="post_reply_button_" style="display:${reply_enb}"> 
+                            <!-- reply_enabled: ${reply_enabled} -->
+                            <a href="#post_${reply_post_id}" class="scroll-to" style="display:${reply_}">
+                                ${reply_post_link_icon}
+                            </a>
+                        </div>
+                        <p class="card-text" style="margin-top:-0.8em">${post_text}</p>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <small class="text-muted">
+                                <span class="post_views">${views}</span> | 
+                                ${time_} | 
+                                <a href="https://t.me/${data_post}" target="_blank">В TG</a>
+                                <br/>by Elon Tusk
+                            </small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `
+
+        last_post = post_id
+
+        console.log(`Result pattern: ${pattern}`)
+
+        if (!post_text.length && !media_pattern.length || !check_sys_msg(post_text)) 
+        { return }
+
+        $(".row-global-block").append(pattern)
+    }
+
+    function loads_posts(before = null) {
+        get_channel_html_data(function (data) { 
+            const el = $('<div></div>')
+            el.html(data)
+
+            const parsed_els = $('.tgme_widget_message_wrap', el)
+            const struct = struct_els(parsed_els)
+
+            for (let i = 0; i < struct.length; i++) {
+                console.log(struct[i])
+                add_post(struct[i])
+            }
+
+            load_freeze = false
+            first_load = true
+
+        }, bef_ = before)
+    }
+
+    $(window).scroll(function () {
+        const scrollPosition = window.pageYOffset
+        const windowSize = window.innerHeight
+        const bodyHeight = document.documentElement.scrollHeight
+        const trigger = Math.max(bodyHeight - (scrollPosition + windowSize), 0)
+
+        if (trigger < 450 && first_load && !load_freeze && last_post > 1) {
+            load_freeze = true
+            notify("Подгружаем посты...")
+            loads_posts(last_post)
+        }
+    })
+
+    // init first posts
+    loads_posts()
+
+    // init gaming server monitoring
+    monitoring_game_server_update()
+    setInterval(monitoring_game_server_update, 1000)
+    
+    // init neuro text updater
+    neuro_text_update()
+    setInterval(neuro_text_update, 1000 * 10)
+})
