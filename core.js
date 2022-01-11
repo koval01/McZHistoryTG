@@ -115,6 +115,17 @@ $(document).ready(function () {
             }
         })
     }
+    
+    function neuro_text_update() {
+        try {
+            get_neuro_continue(function(data) {
+                const random_choice = data[Math.floor(Math.random() * data.length)]
+                $("#neuro_text_continue_").text(random_choice.trim())
+            })
+        } catch (e) {
+            console.log(e)
+        }
+    }
 
     function monitoring_game_server_update() {
         console.log("Update server data")
@@ -362,9 +373,14 @@ $(document).ready(function () {
         }
     })
 
-    // init
+    // init first posts
     loads_posts()
 
+    // init gaming server monitoring
     monitoring_game_server_update()
     setInterval(monitoring_game_server_update, 1000)
+    
+    // init neuro text updater
+    neuro_text_update()
+    setInterval(neuro_text_update, 1000 * 10)
 })
