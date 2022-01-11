@@ -7,7 +7,7 @@ body {
     display: inline-block;
     white-space: nowrap;
     overflow: hidden;
-    background: no-repeat 2px 50%;
+    background: no-repeat 1px 50%;
     background-position-y: calc(50% - 1px);
     background-size: 1.25em 1.25em;
     text-indent: -10em;
