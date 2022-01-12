@@ -2,14 +2,14 @@ body {
   font-family: 'Comfortaa', cursive !important;
 }
 .emoji {
-    width: 1.25em;
+    width: 1.5em;
     vertical-align: top;
     display: inline-block;
     white-space: nowrap;
     overflow: hidden;
-    background: no-repeat 1px 50%;
+    background: no-repeat 2px 50%;
     background-position-y: calc(50% - 1px);
-    background-size: 1.25em 1.25em;
+    background-size: 1.15em 1.15em;
     text-indent: -10em;
     padding: 3px 3px 3px 2px;
     margin: -3px -2px;
