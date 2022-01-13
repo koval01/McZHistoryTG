@@ -49,9 +49,18 @@ body {
 .motd_background {
   background: url("minecraft_dirt_wallpaper_by_thedevartist_d3l1qoj-pre.jpg") !important;
   border-radius: 8px !important;
-  height: 8em;
+  min-height: 8em;
   padding: 0.8em;
   font-size: 0.8em !important;
+}
+.chat_background {
+  background: url("minecraft_dirt_wallpaper_by_thedevartist_d3l1qoj-pre.jpg") !important;
+  border-radius: 8px !important;
+  min-height: 8em;
+  padding: 0.8em;
+  font-size: 0.6em !important;
+  justify-content: left !important;
+  text-align: left !important;
 }
 .reply_post_link {
   margin-bottom: 12px !important;
