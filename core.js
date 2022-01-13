@@ -117,6 +117,26 @@ $(document).ready(function () {
         })
     }
     
+    function get_chat_data(callback) {
+        $.ajax({
+            url: `https://api.zalupa.world/gamechat`,
+            type: "GET",
+            success: function (r) {
+                console.log(r)
+                if (r.success) {
+                    callback(r.body)
+                } else { 
+                    console.log("Check error! (get_chat_data)")
+                    notify("Ошибка! Не удалось получить данные чата (get_chat_data)")
+                }
+            },
+            error: function () {
+                console.log("Error get server data!")
+                notify("Ошибка API (get_chat_data)")
+            }
+        })
+    }
+    
     function neuro_text_update() {
         try {
             get_neuro_continue(function(data) {
