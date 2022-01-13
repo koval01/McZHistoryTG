@@ -137,13 +137,45 @@ $(document).ready(function () {
         })
     }
     
+    function chat_colors_parse(color_) {
+        const colors = {
+            "white": "FFFFFF", "gray": "AAAAAA", "black": "000000",
+            "dark_red": "AA0000", "red": "FF5555", "gold": "FFAA00",
+            "yellow": "FFFF55", "dark_green": "00AA00", "green": "55FF55",
+            "aqua": "55FFFF", "dark_aqua": "00AAAA", "dark_blue": "0000AA",
+            "blue": "5555FF", "light_purple": "FF55FF", 
+            "dark_purple": "AA00AA", "dark_gray": "555555"
+        }
+        if (color_.slice(0, 1) != "#") {
+            return `#${colors[color_]}`
+        }
+        return color_
+    }
+    
+    function chatdata_parse(msg) {
+        for (let i = 0; i < msg.length; i++) {
+          msg[i]
+        }
+    }
+    
+    function chat_update_() {
+        try {
+            get_chat_data(function(data) {
+                // data = chatdata_parse(data)
+                // $("#gamechat_server").text(data)
+            })
+        } catch (e) {
+            console.log(`Chat update error: ${e}`)
+        }
+    }
+    
     function neuro_text_update() {
         try {
             get_neuro_continue(function(data) {
                 $("#neuro_text_continue_").text(data)
             })
         } catch (e) {
-            console.log(e)
+            console.log(`Neuro text update error: ${e}`)
         }
     }
 
@@ -403,4 +435,8 @@ $(document).ready(function () {
     // init neuro text updater
     neuro_text_update()
     setInterval(neuro_text_update, 1000 * 10)
+    
+    // init chat
+    chat_update_()
+    setInterval(chat_update_, 1000)
 })
