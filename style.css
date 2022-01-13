@@ -61,6 +61,7 @@ body {
   font-size: 0.6em !important;
   justify-content: left !important;
   text-align: left !important;
+  margin-bottom: 2em;
 }
 .reply_post_link {
   margin-bottom: 12px !important;
