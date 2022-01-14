@@ -182,7 +182,7 @@ $(document).ready(function () {
       messages_array = messages_array + message_struct
       message_struct = ""
     }
-    
+    console.log(`messages_array.length = ${messages_array.length}`)
     return messages_array
   }
 
@@ -190,8 +190,7 @@ $(document).ready(function () {
     try {
       get_chat_data(function (data) {
         data = chatdata_parse(data)
-        console.log(data)
-        // $("#gamechat_server").text(data)
+        $("#gamechat_server").text(data)
       })
     } catch (e) {
       console.log(`Chat update error: ${e}`)
