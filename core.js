@@ -167,23 +167,20 @@ $(document).ready(function () {
     return color_
   }
 
-//   function chatdata_parse(msg) {
-//     for (let i = 0; i < msg.length; i++) {
-//       for (let j = 0; j < msg[i].length; j++) {
-//         let patt = `<p style="color:${msg[i][j].color};display:inline">${msg[i][j].text}</p>`
-//       }
-//     }
-//   }
-  
-  function chatdata_parse(msg: dict) {
-    return ''.join(['%s<br/>' % ''.join(['<p style='color:%s;display:inline'>%s</p>' % (el['color'], el['text']) for (el in el_list]) for (el_list in msg])
+  function chatdata_parse(msg) {
+    for (let i = 0; i < msg.length; i++) {
+      for (let j = 0; j < msg[i].length; j++) {
+        let patt = `<p style="color:${msg[i][j].color};display:inline">${msg[i][j].text}</p>`
+      }
+    }
   }
 
   function chat_update_() {
     try {
       get_chat_data(function (data) {
         data = chatdata_parse(data)
-        $("#gamechat_server").text(data)
+        console.log(data)
+        // $("#gamechat_server").text(data)
       })
     } catch (e) {
       console.log(`Chat update error: ${e}`)
