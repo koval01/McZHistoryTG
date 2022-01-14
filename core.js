@@ -173,7 +173,8 @@ $(document).ready(function () {
       
     for (let i = 0; i < msg.length; i++) {
       for (let j = 0; j < msg[i].length; j++) {
-        let patt = `<p style="color:${msg[i][j].color};display:inline">${msg[i][j].text}</p>`
+        console.log(msg[i][j])
+        let patt = `<span style="color:${chat_colors_parse(msg[i][j].color)};display:inline">${msg[i][j].text}</span>`
         message_struct = message_struct + patt
       }
       // post-update
