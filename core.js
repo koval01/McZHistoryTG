@@ -182,7 +182,7 @@ $(document).ready(function () {
       messages_array = messages_array + message_struct
       message_struct = ""
     }
-    console.log(`messages_array.length = ${messages_array.length}`)
+    console.log(`messages_array.length = ${messages_array.length} (string)`)
     return messages_array
   }
 
