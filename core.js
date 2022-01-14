@@ -172,9 +172,9 @@ $(document).ready(function () {
     let messages_array = ""
       
     for (let i = 0; i < msg.length; i++) {
-      console.log(msg[i])
-      for (let j = 0; j < msg[i].length; j++) {
-        let patt = `<span style="color:${chat_colors_parse(msg[i][j].color)};display:inline">${msg[i][j].text}</span>`
+      for (let j = 0; j < msg[i]['raw_msg'].length; j++) {
+        const j_body = msg[i]['raw_msg'][j]
+        let patt = `<span style="color:${chat_colors_parse(j_body.color)};display:inline">${j_body.text}</span>`
         message_struct = message_struct + patt
       }
       // post-update
