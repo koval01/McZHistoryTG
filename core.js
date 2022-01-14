@@ -168,11 +168,21 @@ $(document).ready(function () {
   }
 
   function chatdata_parse(msg) {
+    let message_struct = ""
+    let messages_array = ""
+      
     for (let i = 0; i < msg.length; i++) {
       for (let j = 0; j < msg[i].length; j++) {
         let patt = `<p style="color:${msg[i][j].color};display:inline">${msg[i][j].text}</p>`
+        message_struct = message_struct + patt
       }
+      // post-update
+      message_struct = message_struct + "<br/>"
+      messages_array = messages_array + message_struct
+      message_struct = ""
     }
+    
+    return messages_array
   }
 
   function chat_update_() {
