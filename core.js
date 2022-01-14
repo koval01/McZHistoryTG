@@ -190,7 +190,7 @@ $(document).ready(function () {
     try {
       get_chat_data(function (data) {
         data = chatdata_parse(data)
-        $("#gamechat_server").text(data)
+        $("#gamechat_server").html(data)
       })
     } catch (e) {
       console.log(`Chat update error: ${e}`)
