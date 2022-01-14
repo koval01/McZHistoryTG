@@ -54,9 +54,9 @@ $(document).ready(function () {
     e.preventDefault()
     var anchor = $(this).attr('href')
 
-    // if (!anchor) {
-    //     notify("Не удалось найти запись")
-    // }
+    if (!anchor) {
+      notify("Не удалось найти запись")
+    }
     console.log(anchor)
 
     $('html, body').stop().animate({
