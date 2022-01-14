@@ -27,20 +27,16 @@ function mediaError(e) {
 function notify(text) {
   const error_box = $(".error_box")
   const error_text = $(".error_text")
+  
+  notify_hidden = false
+  // error_box.css("margin-bottom", "-50px")
 
-  let ready = false
-
-  if (notify_hidden) {
-    ready = true
-  } else {
-    error_box.css("margin-bottom", "-50px"), ready = true
-  }
-
-  if (ready) {
+  if (!notify_hidden) {
     error_text.text(text)
     error_box.css("margin-bottom", "0")
     setTimeout(function () {
       error_box.css("margin-bottom", "-50px")
+      notify_hidden = true  
     }, 2500)
   }
 }
