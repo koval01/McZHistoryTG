@@ -1,19 +1,5 @@
 var notify_hidden = true, server_update_active = true, first_load = false, load_freeze = false, last_post = null, last_notify_text = null
-const reply_enabled = false, loading_posts = "Подгружаем посты...", re_pub = "6LcHlUUeAAAAAMVppNFdbltrVdZzpRHH4HUU9nPJ"
-
-const reply_post_link_icon = `
-    <svg xmlns="http://www.w3.org/2000/svg" version="1.0" width="24.000000pt" height="24.000000pt" 
-        viewBox="0 0 512.000000 512.000000" preserveAspectRatio="xMidYMid meet" class="reply_post_link">
-        <g transform="translate(0.000000,512.000000) scale(0.100000,-0.100000)" fill="#000000" stroke="none">
-            <path d="M1895 4672 c-16 -11 -443 -421 -949 -912 -601 -584 -923 -904 -932 -926 -20 -48 -17 -93 9 -136 12 -21 
-                437 -440 945 -933 1001 -970 953 -929 1041 -905 21 5 50 19 65 31 57 45 56 37 56 555 l0 477 283 -6 c217 -4 
-                314 -10 421 -26 803 -124 1502 -586 1916 -1267 36 -58 76 -119 89 -135 68 -85 187 -78 255 14 66 89 0 643 -120 
-                1012 -336 1030 -1186 1806 -2234 2038 -141 32 -296 55 -415 62 -49 3 -114 8 -142 11 l-53 5 0 471 c0 519 0 515 
-                -63 560 -43 31 -132 36 -172 10z">
-            </path>
-        </g>
-    </svg>
-`
+const loading_posts = "Подгружаем посты...", re_pub = "6LcHlUUeAAAAAMVppNFdbltrVdZzpRHH4HUU9nPJ"
 
 function mediaError(e) {
     return e.onerror = "", e.src = "", !0
@@ -118,107 +104,12 @@ $(document).ready(function () {
         })
     }
 
-    function get_neuro_continue(callback) {
-        $.ajax({
-            url: `https://api.zalupa.world/neuro`,
-            type: "GET",
-            success: function (r) {
-                if (r.success) {
-                    callback(r.body)
-                } else {
-                    notify("Ошибка! Не удалось получить ответ от нейросети (get_neuro_continue)")
-                }
-            },
-            error: function () {
-                notify("Не удалось получить ответ от нейросети")
-            }
-        })
-    }
-
-    function get_chat_data(callback) {
-        $.ajax({
-            url: `https://api.zalupa.world/gamechat`,
-            type: "GET",
-            success: function (r) {
-                if (r.success) {
-                    callback(r.body)
-                } else {
-                    notify("Ошибка! Не удалось получить данные чата (get_chat_data)")
-                }
-            },
-            error: function () {
-                notify("Ошибка API (get_chat_data)")
-            }
-        })
-    }
-
-    function chat_colors_parse(color_) {
-        const colors = {
-            "white": "FFFFFF",
-            "gray": "AAAAAA",
-            "black": "000000",
-            "dark_red": "AA0000",
-            "red": "FF5555",
-            "gold": "FFAA00",
-            "yellow": "FFFF55",
-            "dark_green": "00AA00",
-            "green": "55FF55",
-            "aqua": "55FFFF",
-            "dark_aqua": "00AAAA",
-            "dark_blue": "0000AA",
-            "blue": "5555FF",
-            "light_purple": "FF55FF",
-            "dark_purple": "AA00AA",
-            "dark_gray": "555555"
-        }
-        if (color_.slice(0, 1) != "#") {
-            return `#${colors[color_]}`
-        }
-        return color_
-    }
-
-    function chatdata_parse(msg) {
-        let message_struct = ""
-        let messages_array = ""
-
-        for (let i = 0; i < msg.length; i++) {
-            for (let j = 0; j < msg[i]['raw_msg'].length; j++) {
-                const j_body = msg[i]['raw_msg'][j]
-                let patt = `<span style="color:${chat_colors_parse(j_body.color)};display:inline">${j_body.text}</span>`
-                message_struct = message_struct + patt
-            }
-            // post-update
-            message_struct = message_struct + "<br/>"
-            messages_array = messages_array + message_struct
-            message_struct = ""
-        }
-        return messages_array
-    }
-
-    function chat_update_() {
-        try {
-            get_chat_data(function (data) {
-                data = chatdata_parse(data)
-                $("#gamechat_server").html(data)
-            })
-        } catch { }
-    }
-
-    function neuro_text_update() {
-        try {
-            get_neuro_continue(function (data) {
-                $("#neuro_text_continue_").text(data)
-            })
-        } catch { }
-    }
-
     function monitoring_game_server_update() {
         try {
             if (server_update_active) {
                 get_game_server_data(function (data) {
                     $("#server_motd").html(data.motd.html)
                     $("#server_players").text(`${data.players.online}/${data.players.max}`)
-                    // $("#server_version").text(data.server.protocol)
                 })
             }
         } catch {
@@ -295,14 +186,6 @@ $(document).ready(function () {
 
                 const time_ = time_processing($(".time", el).attr("datetime"))
 
-                const reply_get = $(".tgme_widget_message_reply", el)
-                var reply_msg_id = null
-
-                if (reply_get.html()) {
-                    reply_msg_id = reply_get.attr("href")
-                    reply_msg_id = parseInt(reply_msg_id.match(/\/\d+/g)[0].slice(1))
-                }
-
                 const media_ = get_media(el)
 
                 array_.push({
@@ -315,8 +198,7 @@ $(document).ready(function () {
                         "data": media_
                     },
                     "data_post": data_post,
-                    "post_id": post_id,
-                    "reply_post_id": reply_msg_id,
+                    "post_id": post_id
                 })
             } catch { }
         }
@@ -365,44 +247,24 @@ $(document).ready(function () {
     }
 
     function add_post(post_data, source) {
-        const media = post_data.media.data
-        const views = post_data.meta.views
-        const time_ = post_data.meta.time
-        const data_post = post_data.data_post
-        const reply_post_id = post_data.reply_post_id
-        const post_id = post_data.post_id
+        const media = post_data.media.data,
+            views = post_data.meta.views,
+            time_ = post_data.meta.time,
+            data_post = post_data.data_post,
+            post_id = post_data.post_id
 
-        let post_text = post_data.post_text
-        let media_pattern = format_media(media)
-        let reply_ = "block"
-        let reply_enb = "block"
-        let reply_post = "block"
+        let post_text = post_data.post_text,
+            media_pattern = format_media(media)
 
         if (!post_text) {
             post_text = ""
         }
-        if (!reply_post_id) {
-            reply_ = "none"
-        }
-        if (!reply_enabled) {
-            reply_enb = "none"
-        }
-        if (reply_post_id && !reply_enabled) {
-            reply_post = "none"
-        }
 
         const pattern = `
-        <div class="col post_style_set" id="post_${post_id}" style="display:${reply_post}">
-            <!-- reply_post_id: ${reply_post_id}; reply_enabled: ${reply_enabled} -->
+        <div class="col post_style_set" id="post_${post_id}">
             <div class="card shadow-sm" style="transition:background-color 1s ease">
                 ${media_pattern}
                 <div class="card-body">
-                    <div id="post_reply_button_" style="display:${reply_enb}"> 
-                        <!-- reply_enabled: ${reply_enabled} -->
-                        <a href="#post_${reply_post_id}" class="scroll-to" style="display:${reply_}">
-                            ${reply_post_link_icon}
-                        </a>
-                    </div>
                     <p class="card-text" style="margin-top:-0.8em">${post_text}</p>
                     <div class="d-flex justify-content-between align-items-center">
                         <small class="text-muted">
