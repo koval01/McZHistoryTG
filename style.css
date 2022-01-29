@@ -33,18 +33,25 @@ body {
     user-select: none;
 }
 .error_text {
-  color: #fff;
-  line-height: 40px;
-  margin-left: 5px;
+  color: #ebebeb;
+  line-height: 40px !important;
+  margin-left: 15px;
+  margin-right: 15px;
   font-size: .7em;
 }
 .error_box {
-  bottom: 0;
+  bottom: 15px;
+  left: 15px;
   position: fixed;
-  background: #2d2d2d;
-  width: 100%;
+  min-width: 210px;
+  max-width: 95%;
   height: 40px;
-  transition: margin-bottom 0.2s;
+  transition: margin-bottom .2s;
+  border-radius: 0.7em;
+  -webkit-backdrop-filter: saturate(180%) blur(20px);
+  backdrop-filter: saturate(180%) blur(20px);
+  background-color: rgba(0, 0, 0, 0);
+  box-shadow: 1px 1px 12px black;
 }
 .motd_background {
   background: url("minecraft_dirt_wallpaper_by_thedevartist_d3l1qoj-pre.jpg");
