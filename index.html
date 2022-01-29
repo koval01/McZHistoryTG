@@ -34,83 +34,95 @@
         <script src="./core.js" crossorigin="anonymous"></script>
     </head>
     <body class="noselect">
-        <header>
-            <div class="collapse bg-dark" id="navbarHeader">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-sm-8 col-md-7 py-4">
-                            <h4 class="text-white">ZALUPA</h4>
-                            <p class="text-muted">Лучший сервер в МайнкрУфте и во всей твоей жизни! Чувствуешь уже этА качество?</p>
-                        </div>
-                        <div class="col-sm-4 offset-md-1 py-4">
-                            <h4 class="text-white">Подпишись пожалуйста</h4>
-                            <ul class="list-unstyled">
-                                <li><a href="https://t.me/zalupaonline" class="text-white">Залупа в Телеге</a></li>
-                            </ul>
-                        </div>
+        <div id="splash_screen">
+            <div class="splash_container">
+                <div class="splash_scroller">
+                    <div class="splash_inner">
+                        <span>Developed</span>
+                        <span>by Koval</span>
                     </div>
                 </div>
             </div>
-            <div class="navbar navbar-dark bg-dark shadow-sm">
-                <div class="container">
-                    <a href="#" class="navbar-brand d-flex align-items-center">
-                        <strong>ZALUPA</strong>
-                    </a>
-                </div>
-            </div>
-        </header>
-        <main>
-            <section class="text-center container">
-                <div class="row py-lg-5">
-                    <div class="col-lg-6 col-md-8 mx-auto">
-                        <h1 class="fw-light" style="margin-top:1em">ZALUPA</h1>
-                        <p class="lead text-muted">Ваша залупа в наших руках. Вам тепло?</p>
-                        <br/>
-                        <p class="lead text-muted">Чтобы залететь на сервер, используй адрес ниже и версию клиента - 
-                            <span id="server_version">1.18.1</span></p>
-                        <h2 class="fw-light">zalupa.online</h2>
-                        <br/>
-                        <p class="lead text-muted motd_background" style="font-family: 'Press Start 2P', cursive" id="server_motd">
-                            A Zalupa Server</p>
-                        <p class="lead text-muted" id="server_players">0/0</p>
-                        <p>
-                          <a href="https://t.me/zalupaonline" target="_blank" 
-                             class="btn btn-primary my-2">Залупа в TG</a>
-                          <a href="https://t.me/zalupa_history" target="_blank" 
-                             class="btn btn-primary my-2">Залупные новости в TG</a>
-                          <a href="https://github.com/koval01/ZalupaHistoryTG" target="_blank" 
-                             class="btn btn-primary my-2">Git</a>
-                        </p>
-                        <br/><br/>
-                        <p class="neuro_text_block">
-                            Залупа подарит незабываемые ощущения. Гляди и наслаждайся, пока есть возможность. У тебя есть уникальная возможность<span id="neuro_text_continue_" style="color:#6572ff"> ...</span>
-                        </p>
-                        <div class="lead text-muted chat_background" style="font-family: 'Press Start 2P', cursive;display:none" id="gamechat_server">
-                            <p style="color:#AAAAAA;display:inline">Не удалось обновить чат...</p><br/>
+        </div>
+        <div id="main_screen" style="display:none">
+            <header>
+                <div class="collapse bg-dark" id="navbarHeader">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-sm-8 col-md-7 py-4">
+                                <h4 class="text-white">ZALUPA</h4>
+                                <p class="text-muted">Лучший сервер в МайнкрУфте и во всей твоей жизни! Чувствуешь уже этА качество?</p>
+                            </div>
+                            <div class="col-sm-4 offset-md-1 py-4">
+                                <h4 class="text-white">Подпишись пожалуйста</h4>
+                                <ul class="list-unstyled">
+                                    <li><a href="https://t.me/zalupaonline" class="text-white">Залупа в Телеге</a></li>
+                                </ul>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </section>
-            <div class="album py-5 bg-light">
-                <div class="container-sm">
-                    <div class="row row-cols-1 g-3 row-global-block post_margin_set"></div>
+                <div class="navbar navbar-dark bg-dark shadow-sm">
+                    <div class="container">
+                        <a href="#" class="navbar-brand d-flex align-items-center">
+                            <strong>ZALUPA</strong>
+                        </a>
+                    </div>
                 </div>
-            </div>
-        </main>
-        <div class="error_box" style="margin-bottom:-50px"><p class="error_text"></p></div>
-        <footer class="text-muted py-5">
-            <div class="container">
-                <p class="float-end mb-1">
-                    <a href="#">СТАРТУЕМ НА ВЕРХ</a>
-                </p>
-                <p class="mb-1">Слеплено специально для ZALUPA Inc. Все права защищены феминисткой Галей. ZALUPA &copy; 2077</p>
-                <p class="mb-1" style="font-size:10px">
-                    Данный сайт был создан для новостей игрового проекта ZALUPA.ONLINE. Любой контент увиденный здесь 
-                  создан для игроков проекта и не имеет ничего общего с реальным миром. Любые совпадения ошибочные 
-                  или ненарочно созданые.  
-                </p>
-            </div>
-        </footer>
+            </header>
+            <main>
+                <section class="text-center container">
+                    <div class="row py-lg-5">
+                        <div class="col-lg-6 col-md-8 mx-auto">
+                            <h1 class="fw-light" style="margin-top:1em">ZALUPA</h1>
+                            <p class="lead text-muted">Ваша залупа в наших руках. Вам тепло?</p>
+                            <br/>
+                            <p class="lead text-muted">Чтобы залететь на сервер, используй адрес ниже и версию клиента - 
+                                <span id="server_version">1.18.1</span></p>
+                            <h2 class="fw-light">zalupa.online</h2>
+                            <br/>
+                            <p class="lead text-muted motd_background" style="font-family: 'Press Start 2P', cursive" id="server_motd">
+                                A Zalupa Server</p>
+                            <p class="lead text-muted" id="server_players">0/0</p>
+                            <p>
+                              <a href="https://t.me/zalupaonline" target="_blank" 
+                                 class="btn btn-primary my-2">Залупа в TG</a>
+                              <a href="https://t.me/zalupa_history" target="_blank" 
+                                 class="btn btn-primary my-2">Залупные новости в TG</a>
+                              <a href="https://github.com/koval01/ZalupaHistoryTG" target="_blank" 
+                                 class="btn btn-primary my-2">Git</a>
+                            </p>
+                            <br/><br/>
+                            <p class="neuro_text_block">
+                                Залупа подарит незабываемые ощущения. Гляди и наслаждайся, пока есть возможность. У тебя есть уникальная возможность<span id="neuro_text_continue_" style="color:#6572ff"> ...</span>
+                            </p>
+                            <div class="lead text-muted chat_background" style="font-family: 'Press Start 2P', cursive;display:none" id="gamechat_server">
+                                <p style="color:#AAAAAA;display:inline">Не удалось обновить чат...</p><br/>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                <div class="album py-5 bg-light">
+                    <div class="container-sm">
+                        <div class="row row-cols-1 g-3 row-global-block post_margin_set"></div>
+                    </div>
+                </div>
+            </main>
+            <div class="error_box" style="margin-bottom:-50px"><p class="error_text"></p></div>
+            <footer class="text-muted py-5">
+                <div class="container">
+                    <p class="float-end mb-1">
+                        <a href="#">СТАРТУЕМ НА ВЕРХ</a>
+                    </p>
+                    <p class="mb-1">Слеплено специально для ZALUPA Inc. Все права защищены феминисткой Галей. ZALUPA &copy; 2077</p>
+                    <p class="mb-1" style="font-size:10px">
+                        Данный сайт был создан для новостей игрового проекта ZALUPA.ONLINE. Любой контент увиденный здесь 
+                      создан для игроков проекта и не имеет ничего общего с реальным миром. Любые совпадения ошибочные 
+                      или ненарочно созданые.  
+                    </p>
+                </div>
+            </footer>
+        </div>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.1/js/bootstrap.bundle.min.js" integrity="sha512-mULnawDVcCnsk9a4aG1QLZZ6rcce/jSzEGqUkeOLy0b6q0+T6syHrxlsAGH7ZVoqC93Pd0lBqd6WguPWih7VHA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     </body>
 </html>
