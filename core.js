@@ -1,6 +1,5 @@
 var notify_hidden = true, server_update_active = true, first_load = false, load_freeze = false, last_post = null, last_notify_text = null
-
-const reply_enabled = false
+const reply_enabled = false, loading_posts = "Подгружаем посты..."
 
 const reply_post_link_icon = `
     <svg xmlns="http://www.w3.org/2000/svg" version="1.0" width="24.000000pt" height="24.000000pt" 
@@ -31,7 +30,7 @@ function hide_splash() {
 function notify(text) {
     const error_box = $(".error_box")
     const error_text = $(".error_text")
-    if (notify_hidden && last_notify_text != text) {
+    if (notify_hidden && (last_notify_text != text || loading_posts == text)) {
         last_notify_text = text
         notify_hidden = false
         error_text.text(text)
@@ -431,7 +430,7 @@ $(document).ready(function () {
 
         if (trigger < 450 && first_load && !load_freeze && last_post > 1) {
             load_freeze = true
-            notify("Подгружаем посты...")
+            notify(loading_posts)
             loads_posts(last_post)
         }
     })
