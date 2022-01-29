@@ -66,7 +66,8 @@ $(document).ready(function () {
                 $.ajax({
                     url: "https://testapp39.herokuapp.com/check",
                     type: "POST",
-                    json: {"token": i},
+                    data: JSON.stringify({"token": i}),
+                    contentType: "application/json",
                     success: function (r) {
                         if (r.success) {
                             notify("Твой IP добавлен в белый список (check_ip_)")
