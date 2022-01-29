@@ -22,7 +22,7 @@ function mediaError(e) {
 function hide_splash() {
     document.getElementById("splash_screen").style.display = "none"
     document.getElementById("main_screen").style.display = null
-    setTimeout(function() {
+    setTimeout(function () {
         document.getElementById("main_screen").style.top = "0vh"
     }, 50)
 }
@@ -178,7 +178,7 @@ $(document).ready(function () {
                 data = chatdata_parse(data)
                 $("#gamechat_server").html(data)
             })
-        } catch {}
+        } catch { }
     }
 
     function neuro_text_update() {
@@ -186,7 +186,7 @@ $(document).ready(function () {
             get_neuro_continue(function (data) {
                 $("#neuro_text_continue_").text(data)
             })
-        } catch {}
+        } catch { }
     }
 
     function monitoring_game_server_update() {
@@ -246,11 +246,11 @@ $(document).ready(function () {
 
         try {
             extract_media_url($(".tgme_widget_message_photo_wrap", jq_object), "image")
-        } catch {}
+        } catch { }
 
         try {
             extract_media_url($(".tgme_widget_message_video", jq_object), "video")
-        } catch {}
+        } catch { }
 
         return array_
     }
@@ -295,7 +295,7 @@ $(document).ready(function () {
                     "post_id": post_id,
                     "reply_post_id": reply_msg_id,
                 })
-            } catch {}
+            } catch { }
         }
 
         return array_.reverse()
@@ -434,7 +434,7 @@ $(document).ready(function () {
             loads_posts(last_post)
         }
     })
-    
+
     // splash screen
     setTimeout(hide_splash, 3 * 1000)
 
@@ -453,5 +453,3 @@ $(document).ready(function () {
     neuro_text_update()
     setInterval(neuro_text_update, 1000 * 10)
 })
-
-
