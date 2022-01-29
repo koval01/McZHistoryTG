@@ -1,8 +1,4 @@
-var notify_hidden = true
-var server_update_active = true
-var first_load = false
-var load_freeze = false
-var last_post = null
+var notify_hidden = true, server_update_active = true, first_load = false, load_freeze = false, last_post = null, last_notify_text = null
 
 const reply_enabled = false
 
@@ -35,7 +31,8 @@ function hide_splash() {
 function notify(text) {
     const error_box = $(".error_box")
     const error_text = $(".error_text")
-    if (notify_hidden) {
+    if (notify_hidden && last_notify_text != text) {
+        last_notify_text = text
         notify_hidden = false
         error_text.text(text)
         error_box.css("margin-bottom", "0")
