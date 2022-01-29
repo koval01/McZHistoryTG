@@ -24,6 +24,11 @@ function mediaError(e) {
     return e.onerror = "", e.src = "", !0
 }
 
+function hide_splash() {
+    document.getElementById("splash_screen").style.display = "none"
+    document.getElementById("main_screen").style.display = null
+}
+
 function notify(text) {
     const error_box = $(".error_box")
     const error_text = $(".error_text")
@@ -430,6 +435,9 @@ $(document).ready(function () {
             loads_posts(last_post)
         }
     })
+    
+    // splash screen
+    setTimeout(hide_splash, 3 * 1000)
 
     // init first posts
     loads_posts()
