@@ -137,3 +137,7 @@ body {
   25%  {margin-top: -50px}
   100%  {margin-top: -50px}
 }
+.main_container_anim {
+  position: relative;
+  transition: top 3s;
+}
