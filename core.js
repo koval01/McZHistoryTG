@@ -27,7 +27,9 @@ function mediaError(e) {
 function hide_splash() {
     document.getElementById("splash_screen").style.display = "none"
     document.getElementById("main_screen").style.display = null
-    document.getElementById("main_screen").style.top = "0vh"
+    setTimeout(function() {
+        document.getElementById("main_screen").style.top = "0vh"
+    }, 50)
 }
 
 function notify(text) {
