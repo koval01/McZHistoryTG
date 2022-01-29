@@ -31,7 +31,7 @@ function notify(text) {
     const error_box = $(".error_box")
     const error_text = $(".error_text")
     if (notify_hidden && (last_notify_text != text || loading_posts == text)) {
-        last_notify_text = text
+        if (loading_posts != text) { last_notify_text = text }
         notify_hidden = false
         error_text.text(text)
         error_box.css("margin-bottom", "0")
@@ -453,4 +453,5 @@ $(document).ready(function () {
     neuro_text_update()
     setInterval(neuro_text_update, 1000 * 10)
 })
+
 
