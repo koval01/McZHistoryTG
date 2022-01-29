@@ -34,9 +34,9 @@ body {
 }
 .error_text {
   color: #fff;
-  line-height: 36px !important;
+  line-height: 40px;
   margin-left: 5px;
-  font-size: calc(12px + (18 - 14) * ((100vw - 680px) / (1024 - 480)));
+  font-size: .7em;
 }
 .error_box {
   bottom: 0;
@@ -47,33 +47,33 @@ body {
   transition: margin-bottom 0.2s;
 }
 .motd_background {
-  background: url("minecraft_dirt_wallpaper_by_thedevartist_d3l1qoj-pre.jpg") !important;
-  border-radius: 8px !important;
+  background: url("minecraft_dirt_wallpaper_by_thedevartist_d3l1qoj-pre.jpg");
+  border-radius: 8px;
   min-height: 8em;
   padding: 0.8em;
-  font-size: 0.8em !important;
+  font-size: 0.8em;
 }
 .chat_background {
-  background: url("minecraft_dirt_wallpaper_by_thedevartist_d3l1qoj-pre.jpg") !important;
-  border-radius: 8px !important;
+  background: url("minecraft_dirt_wallpaper_by_thedevartist_d3l1qoj-pre.jpg");
+  border-radius: 8px;
   min-height: 8em;
   padding: 0.8em;
-  font-size: 0.6em !important;
-  justify-content: left !important;
-  text-align: left !important;
+  font-size: 0.6em;
+  justify-content: left;
+  text-align: left;
   margin-bottom: 2em;
 }
 .reply_post_link {
-  margin-bottom: 12px !important;
-  margin-top: -12px !important;
+  margin-bottom: 12px;
+  margin-top: -12px;
   background: #c6c6c6;
-  border-radius: 5px !important;
-  padding: 4px !important;
+  border-radius: 5px;
+  padding: 4px;
 }
 .post_style_set {
   margin-bottom:0.7em;
-  padding-right:8px !important;
-  padding-left:8px !important;
+  padding-right:8px;
+  padding-left:8px;
 }
 .neuro_text_block {
   min-height: 9em;
@@ -81,9 +81,9 @@ body {
 
 @media (min-width: 768px) {
   .post_margin_set {
-    max-width: 80% !important;
-    justify-content: center !important;
-    margin-left: auto !important;
-    margin-right: auto !important;
+    max-width: 80%;
+    justify-content: center;
+    margin-left: auto;
+    margin-right: auto;
   }
 }
