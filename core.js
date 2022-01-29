@@ -470,12 +470,4 @@ $(document).ready(function () {
     // init gaming server monitoring
     monitoring_game_server_update()
     setInterval(monitoring_game_server_update, 800)
-
-    // init chat
-    // chat_update_()
-    // setInterval(chat_update_, 800)
-
-    // init neuro text updater
-    neuro_text_update()
-    setInterval(neuro_text_update, 1000 * 10)
 })
