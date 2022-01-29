@@ -61,8 +61,13 @@ $(document).ready(function () {
                             notify("Твой IP не прошел проверку (check_ip_)")
                         }
                     },
-                    error: function () {
-                        notify("Ошибка формирования запроса (check_ip_)")
+                    error: function (err) {
+                        console.log(`Error ajax (check_ip_): ${err}`)
+                    },
+                    statusCode: {
+                        429: function(response) {
+                            notify(`${response} (check_ip_)`)
+                        }
                     }
                 })
             })
@@ -334,3 +339,4 @@ $(document).ready(function () {
     monitoring_game_server_update()
     setInterval(monitoring_game_server_update, 800)
 })
+
