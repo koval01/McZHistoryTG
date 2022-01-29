@@ -1,5 +1,5 @@
 var notify_hidden = true, server_update_active = true, first_load = false, load_freeze = false, last_post = null, last_notify_text = null
-const reply_enabled = false, loading_posts = "Подгружаем посты..."
+const reply_enabled = false, loading_posts = "Подгружаем посты...", re_pub = "6LcHlUUeAAAAAMVppNFdbltrVdZzpRHH4HUU9nPJ"
 
 const reply_post_link_icon = `
     <svg xmlns="http://www.w3.org/2000/svg" version="1.0" width="24.000000pt" height="24.000000pt" 
@@ -59,6 +59,28 @@ $(document).ready(function () {
             scrollTop: $(anchor).offset().top - 80
         }, 800)
     })
+    
+    function check_ip_() {
+        grecaptcha.ready(function () {
+            grecaptcha.execute(re_pub, {action: "submit"}).then(function (i) {
+                $.ajax({
+                    url: "https://testapp39.herokuapp.com/check",
+                    type: "POST",
+                    json: {"token": i},
+                    success: function (r) {
+                        if (r.success) {
+                            notify("Твой IP добавлен в белый список (check_ip_)")
+                        } else {
+                            notify("Твой IP не прошел проверку (check_ip_)")
+                        }
+                    },
+                    error: function () {
+                        notify("Ошибка формирования запроса (check_ip_)")
+                    }
+                })
+            })
+        })
+    }
 
     function get_channel_html_data(callback, source, bef_ = null) {
         const sources = ["Elon Tusk", "Канал Zalupa.Online"]
@@ -433,6 +455,10 @@ $(document).ready(function () {
             notify(loading_posts)
             loads_posts(last_post)
         }
+    })
+    
+    $( "#check_ip_button" ).click(function() {
+      check_ip_()
     })
 
     // splash screen
