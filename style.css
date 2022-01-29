@@ -46,7 +46,7 @@ body {
   min-width: 210px;
   max-width: 95%;
   height: 40px;
-  transition: margin-bottom .2s;
+  transition: margin-bottom .4s;
   border-radius: 0.7em;
   -webkit-backdrop-filter: saturate(180%) blur(20px);
   backdrop-filter: saturate(180%) blur(20px);
