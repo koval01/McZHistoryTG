@@ -33,7 +33,7 @@ body {
     user-select: none;
 }
 .error_text {
-  color: #ebebeb;
+  color: #191919;
   line-height: 40px !important;
   margin-left: 15px;
   margin-right: 15px;
