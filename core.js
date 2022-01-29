@@ -31,46 +31,44 @@ function notify(text) {
         notify_hidden = false
         error_text.text(text)
         error_box.css("margin-bottom", "0")
-        setTimeout(function() {
+        setTimeout(function () {
             error_box.css("margin-bottom", "-150px")
             notify_hidden = true
         }, 2500)
     }
 }
 
-$(document).ready(function() {
+$(document).ready(function () {
     function clear_str_(string_) {
         return string_.toString().replace(/\\n/g, '').replace(/\\"/g, '"').replace(/\\/g, '')
     }
 
-    $("a.scroll-to").on("click", function(e) {
+    $("a.scroll-to").on("click", function (e) {
         e.preventDefault()
         var anchor = $(this).attr('href')
 
         if (!anchor) {
             notify("Не удалось найти запись")
         }
-        console.log(anchor)
 
         $('html, body').stop().animate({
             scrollTop: $(anchor).offset().top - 80
         }, 800)
     })
 
-    function get_channel_html_data(callback, bef_ = null) {
+    function get_channel_html_data(callback, source, bef_ = null) {
+        const sources = ["Elon Tusk", "Канал Zalupa.Online"]
         $.ajax({
-            url: `https://api.zalupa.world/channel?before=${bef_}&choice=0`,
+            url: `https://api.zalupa.world/channel?before=${bef_}&choice=${source}`,
             type: "GET",
-            success: function(r) {
+            success: function (r) {
                 if (r.success && r.body.length > 128) {
-                    callback(clear_str_(r.body))
+                    callback({ "data": clear_str_(r.body), "source": sources[source] })
                 } else {
-                    console.log("Check error! (get_channel_html_data)")
                     notify("Ошибка проверки данных (get_channel_html_data)")
                 }
             },
-            error: function() {
-                console.log("Error get channel data!")
+            error: function () {
                 notify("Не удалось загрузить посты")
             }
         })
@@ -80,16 +78,14 @@ $(document).ready(function() {
         $.ajax({
             url: `https://api.zalupa.world/server`,
             type: "GET",
-            success: function(r) {
+            success: function (r) {
                 if (r.success) {
                     callback(r.body)
                 } else {
-                    console.log("Check error! (get_game_server_data)")
                     notify("Ошибка проверки данных (get_game_server_data)")
                 }
             },
-            error: function() {
-                console.log("Error get server data!")
+            error: function () {
                 notify("Не удалось загрузить данные сервера")
             }
         })
@@ -99,17 +95,14 @@ $(document).ready(function() {
         $.ajax({
             url: `https://api.zalupa.world/neuro`,
             type: "GET",
-            success: function(r) {
-                console.log(r)
+            success: function (r) {
                 if (r.success) {
                     callback(r.body)
                 } else {
-                    console.log("Check error! (get_neuro_continue)")
                     notify("Ошибка! Не удалось получить ответ от нейросети (get_neuro_continue)")
                 }
             },
-            error: function() {
-                console.log("Error get server data!")
+            error: function () {
                 notify("Не удалось получить ответ от нейросети")
             }
         })
@@ -119,17 +112,14 @@ $(document).ready(function() {
         $.ajax({
             url: `https://api.zalupa.world/gamechat`,
             type: "GET",
-            success: function(r) {
-                console.log(r)
+            success: function (r) {
                 if (r.success) {
                     callback(r.body)
                 } else {
-                    console.log("Check error! (get_chat_data)")
                     notify("Ошибка! Не удалось получить данные чата (get_chat_data)")
                 }
             },
-            error: function() {
-                console.log("Error get server data!")
+            error: function () {
                 notify("Ошибка API (get_chat_data)")
             }
         })
@@ -175,43 +165,36 @@ $(document).ready(function() {
             messages_array = messages_array + message_struct
             message_struct = ""
         }
-        console.log(`messages_array.length = ${messages_array.length} (string)`)
         return messages_array
     }
 
     function chat_update_() {
         try {
-            get_chat_data(function(data) {
+            get_chat_data(function (data) {
                 data = chatdata_parse(data)
                 $("#gamechat_server").html(data)
             })
-        } catch (e) {
-            console.log(`Chat update error: ${e}`)
-        }
+        } catch {}
     }
 
     function neuro_text_update() {
         try {
-            get_neuro_continue(function(data) {
+            get_neuro_continue(function (data) {
                 $("#neuro_text_continue_").text(data)
             })
-        } catch (e) {
-            console.log(`Neuro text update error: ${e}`)
-        }
+        } catch {}
     }
 
     function monitoring_game_server_update() {
-        console.log("Update server data")
         try {
             if (server_update_active) {
-                get_game_server_data(function(data) {
+                get_game_server_data(function (data) {
                     $("#server_motd").html(data.motd.html)
                     $("#server_players").text(`${data.players.online}/${data.players.max}`)
                     // $("#server_version").text(data.server.protocol)
                 })
             }
-        } catch (e) {
-            console.log(e)
+        } catch {
             server_update_active = false
         }
     }
@@ -237,6 +220,7 @@ $(document).ready(function() {
         }
 
         function extract_media_url(obj, type_) {
+            var prev_link = null
             for (let i = 0; i < obj.length; i++) {
                 let media_obj = null
 
@@ -248,6 +232,8 @@ $(document).ready(function() {
                         .replace(/url\(\"/g, "").replace(/\"\)/g, "")
                 } else if (type_ == "video") {
                     media_obj = $(".tgme_widget_message_video", el).attr("src")
+                    if (prev_link == media_obj) { media_obj = null }
+                    else { prev_link = media_obj }
                 }
 
                 media_struct(media_obj, type_)
@@ -256,27 +242,19 @@ $(document).ready(function() {
 
         try {
             extract_media_url($(".tgme_widget_message_photo_wrap", jq_object), "image")
-        } catch (e) {
-            console.log(`Images extract catch: ${e}`)
-
-        }
+        } catch {}
 
         try {
             extract_media_url($(".tgme_widget_message_video", jq_object), "video")
-        } catch (e) {
-            console.log(`Videos extract catch: ${e}`)
-        }
+        } catch {}
 
-        console.log(array_)
         return array_
     }
 
     function struct_els(els) {
-        console.log(`Len els: ${els.length}`)
         let array_ = []
 
         for (let i = 0; i < els.length; i++) {
-            console.log(els[i])
 
             try {
                 const el = $('<div></div>')
@@ -296,7 +274,6 @@ $(document).ready(function() {
                 if (reply_get.html()) {
                     reply_msg_id = reply_get.attr("href")
                     reply_msg_id = parseInt(reply_msg_id.match(/\/\d+/g)[0].slice(1))
-                    console.log(`Message ${post_id} is reply for message ${reply_msg_id}`)
                 }
 
                 const media_ = get_media(el)
@@ -314,9 +291,7 @@ $(document).ready(function() {
                     "post_id": post_id,
                     "reply_post_id": reply_msg_id,
                 })
-            } catch (e) {
-                console.log(e)
-            }
+            } catch {}
         }
 
         return array_.reverse()
@@ -362,7 +337,7 @@ $(document).ready(function() {
         return true
     }
 
-    function add_post(post_data) {
+    function add_post(post_data, source) {
         const media = post_data.media.data
         const views = post_data.meta.views
         const time_ = post_data.meta.time
@@ -407,7 +382,7 @@ $(document).ready(function() {
                             <span class="post_views">${views}</span> | 
                             ${time_} | 
                             <a href="https://t.me/${data_post}" target="_blank">В TG</a>
-                            <br/>by Elon Tusk
+                            <br/>with ${source}
                         </small>
                     </div>
                 </div>
@@ -417,8 +392,6 @@ $(document).ready(function() {
 
         last_post = post_id
 
-        console.log(`Result pattern: ${pattern}`)
-
         if (!post_text.length && !media_pattern.length || !check_sys_msg(post_text)) {
             return
         }
@@ -427,7 +400,8 @@ $(document).ready(function() {
     }
 
     function loads_posts(before = null) {
-        get_channel_html_data(function(data) {
+        get_channel_html_data(function (data_) {
+            data = data_.data
             const el = $('<div></div>')
             el.html(data)
 
@@ -435,17 +409,16 @@ $(document).ready(function() {
             const struct = struct_els(parsed_els)
 
             for (let i = 0; i < struct.length; i++) {
-                console.log(struct[i])
-                add_post(struct[i])
+                add_post(struct[i], data_.source)
             }
 
             load_freeze = false
             first_load = true
 
-        }, bef_ = before)
+        }, 1, bef_ = before)
     }
 
-    $(window).scroll(function() {
+    $(window).scroll(function () {
         const scrollPosition = window.pageYOffset
         const windowSize = window.innerHeight
         const bodyHeight = document.documentElement.scrollHeight
@@ -473,3 +446,4 @@ $(document).ready(function() {
     neuro_text_update()
     setInterval(neuro_text_update, 1000 * 10)
 })
+
