@@ -1,6 +1,9 @@
 body {
   font-family: 'Comfortaa', cursive !important;
 }
+.grecaptcha-badge {
+  display: none !important;
+}
 .emoji {
     width: 1.5em;
     vertical-align: top;
