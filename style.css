@@ -78,7 +78,6 @@ body {
 .neuro_text_block {
   min-height: 9em;
 }
-
 @media (min-width: 768px) {
   .post_margin_set {
     max-width: 80%;
@@ -86,4 +85,48 @@ body {
     margin-left: auto;
     margin-right: auto;
   }
+}
+.splash_container {
+  width: 100%;
+  height: 50px;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  margin-left: -25%;
+  margin-top: -25px;
+}
+.splash_scroller {
+  height: 50px;
+  line-height: 50px;
+  float: left;
+  margin-left: 5px;
+  overflow: hidden;
+}
+.splash_scroller span {
+  display: block; 
+  font-size: 200%;
+  color: #000;
+  }
+.splash_scroller .splash_inner {
+  -webkit-animation: splash_scroll 10s 1 ease-out;
+  -moz-animation: splash_scroll 10s 1 ease-out;
+  animation: splash_scroll 10s 1 ease-out;
+  -webkit-animation-fill-mode: forwards;
+  -moz-animation-fill-mode: forwards;
+  animation-fill-mode: forwards;
+}
+@-webkit-keyframes splash_scroll {
+  12%  {margin-top: 0px}
+  25%  {margin-top: -50px}
+  100%  {margin-top: -50px}
+}
+@-moz-keyframes splash_scroll {
+  12%  {margin-top: 0px}
+  25%  {margin-top: -50px}
+  100%  {margin-top: -50px}
+}
+@keyframes splash_scroll {
+  12%  {margin-top: 0px}
+  25%  {margin-top: -50px}
+  100%  {margin-top: -50px}
 }
