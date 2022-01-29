@@ -339,4 +339,3 @@ $(document).ready(function () {
     monitoring_game_server_update()
     setInterval(monitoring_game_server_update, 800)
 })
-
