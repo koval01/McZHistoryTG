@@ -66,7 +66,7 @@ $(document).ready(function () {
                     },
                     statusCode: {
                         429: function(response) {
-                            notify(`${response} (check_ip_)`)
+                            notify(`${response.responseText} (check_ip_)`)
                         }
                     }
                 })
