@@ -240,7 +240,7 @@ $(document).ready(function () {
     }
 
     function check_sys_msg(text) {
-        const frgs = [" pinned «", "Channel photo updated"]
+        const frgs = [" pinned «", "Channel photo updated", "Channel name was changed to «", "Channel created"]
 
         for (let i = 0; i < frgs.length; i++) {
             if (text.includes(frgs[i])) {
